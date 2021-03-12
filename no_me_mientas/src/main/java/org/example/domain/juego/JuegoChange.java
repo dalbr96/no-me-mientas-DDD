@@ -5,6 +5,10 @@ import org.example.domain.juego.events.JuegoCreado;
 import org.example.domain.juego.events.JuegoFinalizadoGanador;
 import org.example.domain.juego.events.JuegoIniciado;
 import org.example.domain.juego.events.JugadorAnhadido;
+import org.example.domain.juego.values.JugadorId;
+
+
+import java.util.HashMap;
 
 public class JuegoChange extends EventChange {
 
@@ -17,7 +21,15 @@ public class JuegoChange extends EventChange {
         });
 
         apply((JugadorAnhadido event) -> {
-            juego.jugadores.put(event.getJugador().identity(), event.getJugador());
+
+            if(Boolean.TRUE.equals(juego.juegoIniciado)){
+                throw new IllegalArgumentException("No puede agregar jugadores en un juego iniciado");
+            }
+
+            HashMap<JugadorId, Jugador> jugadoresNuevos = new HashMap<>();
+            juego.jugadores.forEach((jugadorId, jugador)-> jugadoresNuevos.put(jugadorId, jugador));
+            jugadoresNuevos.put(event.getJugadorId(), new Jugador(event.getJugadorId(), event.getNombre()));
+            juego.jugadores = jugadoresNuevos;
         });
 
         apply((JuegoIniciado event) ->{

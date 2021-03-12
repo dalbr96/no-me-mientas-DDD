@@ -8,6 +8,7 @@ import org.example.domain.juego.events.JuegoIniciado;
 import org.example.domain.juego.events.JugadorAnhadido;
 import org.example.domain.juego.values.JuegoId;
 import org.example.domain.juego.values.JugadorId;
+import org.example.domain.juego.values.Name;
 
 import java.util.HashMap;
 import java.util.List;
@@ -17,7 +18,7 @@ import java.util.Set;
 
 public class Juego extends AggregateEvent<JuegoId> {
 
-    protected Map<JugadorId, Jugador> jugadores;
+    protected Map<JugadorId, Jugador> jugadores = new HashMap<>();
     protected Boolean juegoIniciado;
     protected Boolean hayGanador;
 
@@ -30,7 +31,7 @@ public class Juego extends AggregateEvent<JuegoId> {
     public Juego(JuegoId entityId, Set<Jugador> jugadores){
 
         super(entityId);
-        Map<JugadorId, Jugador> jugadoresNuevos = new HashMap<>();
+        HashMap<JugadorId, Jugador> jugadoresNuevos = new HashMap<>();
         jugadores.forEach(jugador -> jugadoresNuevos.put(jugador.identity(), jugador));
         appendChange(new JuegoCreado(jugadoresNuevos)).apply();
 
@@ -42,8 +43,8 @@ public class Juego extends AggregateEvent<JuegoId> {
         return juego;
     }
 
-    public void anhadirJugador(Jugador jugador){
-        appendChange(new JugadorAnhadido(jugador)).apply();
+    public void addJugador(JugadorId jugadorId, Name nombre){
+        appendChange(new JugadorAnhadido(jugadorId, nombre)).apply();
     }
 
     public void iniciarJuego(){
