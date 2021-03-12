@@ -3,6 +3,7 @@ package org.example.domain.juego;
 import co.com.sofka.domain.generic.AggregateEvent;
 import co.com.sofka.domain.generic.DomainEvent;
 import org.example.domain.juego.events.JuegoCreado;
+import org.example.domain.juego.events.JugadorAnhadido;
 import org.example.domain.juego.values.JuegoId;
 import org.example.domain.juego.values.JugadorId;
 
@@ -37,6 +38,10 @@ public class Juego extends AggregateEvent<JuegoId> {
         var juego = new Juego(entityId);
         events.forEach(juego::applyEvent);
         return juego;
+    }
+
+    public void añadirJugador(Jugador jugador){
+        appendChange(new JugadorAnhadido(jugador)).apply();
     }
 
 
