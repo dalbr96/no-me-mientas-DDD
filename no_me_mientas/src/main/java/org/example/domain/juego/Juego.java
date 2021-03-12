@@ -1,11 +1,13 @@
 package org.example.domain.juego;
 
 import co.com.sofka.domain.generic.AggregateEvent;
+import co.com.sofka.domain.generic.DomainEvent;
 import org.example.domain.juego.events.JuegoCreado;
 import org.example.domain.juego.values.JuegoId;
 import org.example.domain.juego.values.JugadorId;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -29,6 +31,12 @@ public class Juego extends AggregateEvent<JuegoId> {
         jugadores.forEach(jugador -> jugadoresNuevos.put(jugador.identity(), jugador));
         appendChange(new JuegoCreado(jugadoresNuevos)).apply();
 
+    }
+
+    public static Juego from(JuegoId entityId, List<DomainEvent> events){
+        var juego = new Juego(entityId);
+        events.forEach(juego::applyEvent);
+        return juego;
     }
 
 
