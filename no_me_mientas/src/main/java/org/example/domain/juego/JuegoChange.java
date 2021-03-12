@@ -27,6 +27,10 @@ public class JuegoChange extends EventChange {
                 throw new IllegalArgumentException("El juego ya está iniciado");
             }
 
+            if(juego.jugadores().size() < 3){
+                throw new IllegalArgumentException("El juego no puede iniciar con menos de 3 jugadores");
+            }
+
             juego.juegoIniciado= Boolean.TRUE;
         });
 
