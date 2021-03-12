@@ -3,6 +3,7 @@ package org.example.domain.juego;
 import co.com.sofka.domain.generic.AggregateEvent;
 import co.com.sofka.domain.generic.DomainEvent;
 import org.example.domain.juego.events.JuegoCreado;
+import org.example.domain.juego.events.JuegoFinalizadoGanador;
 import org.example.domain.juego.events.JuegoIniciado;
 import org.example.domain.juego.events.JugadorAnhadido;
 import org.example.domain.juego.values.JuegoId;
@@ -18,7 +19,7 @@ public class Juego extends AggregateEvent<JuegoId> {
 
     protected Map<JugadorId, Jugador> jugadores;
     protected Boolean juegoIniciado;
-    protected Boolean tieneGanador;
+    protected Boolean hayGanador;
 
 
     private Juego(JuegoId entityId) {
@@ -41,7 +42,7 @@ public class Juego extends AggregateEvent<JuegoId> {
         return juego;
     }
 
-    public void añadirJugador(Jugador jugador){
+    public void anhadirJugador(Jugador jugador){
         appendChange(new JugadorAnhadido(jugador)).apply();
     }
 
@@ -49,5 +50,20 @@ public class Juego extends AggregateEvent<JuegoId> {
         appendChange( new JuegoIniciado()).apply();
     }
 
+    public void finalizarJuegoGanador(){
+        appendChange(new JuegoFinalizadoGanador()).apply();
+    }
 
+    public Map<JugadorId, Jugador> jugadores() {
+        return jugadores;
+    }
+
+    public Boolean estaIniciado() {
+
+        return juegoIniciado;
+    }
+
+    public Boolean hayGanador() {
+        return hayGanador;
+    }
 }
