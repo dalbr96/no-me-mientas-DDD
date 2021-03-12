@@ -1,2 +1,7 @@
-package org.example.domain.juego.values;public class JugadorId {
+package org.example.domain.juego.values;
+
+import co.com.sofka.domain.generic.Identity;
+
+public class JugadorId extends Identity {
+    
 }
