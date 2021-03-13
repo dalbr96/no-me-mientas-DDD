@@ -44,18 +44,22 @@ class AddJugadorUseCaseTest {
         var addJugadorUseCase = new AddJugadorUseCase();
         addJugadorUseCase.addRepository(repository);
 
-        var events = UseCaseHandler.getInstance().setIdentifyExecutor(juegoId.value()).syncExecutor(addJugadorUseCase, new RequestCommand<>(command)).orElseThrow().getDomainEvents();
+        var events = UseCaseHandler.getInstance()
+                .setIdentifyExecutor(juegoId.value())
+                .syncExecutor(addJugadorUseCase, new RequestCommand<>(command))
+                .orElseThrow().getDomainEvents();
 
         var juegoConJugadorAñadido = (JugadorAnhadido)events.get(0);
 
-        var updatedEvents = new ArrayList<DomainEvent>();
-        domainEvents_CasoFeliz().forEach(event -> { updatedEvents.add(event); });
+        var updatedEvents = new ArrayList<>(domainEvents_CasoFeliz());
+
         updatedEvents.add(juegoConJugadorAñadido);
 
         var juego = Juego.from(juegoId, updatedEvents);
 
         Assertions.assertEquals("Daniel", juegoConJugadorAñadido.getNombre().value());
         Assertions.assertEquals(jugador.identity(), juegoConJugadorAñadido.getJugadorId());
+
         Assertions.assertEquals(3, juego.jugadores().size());
         Assertions.assertEquals(jugador, juego.jugadores().get(jugador.identity()));
 
@@ -78,8 +82,6 @@ class AddJugadorUseCaseTest {
             UseCaseHandler.getInstance().setIdentifyExecutor(juegoId.value()).syncExecutor(addJugadorUseCase, new RequestCommand<>(command)).orElseThrow().getDomainEvents();
         });
 
-
-
     }
 
     private List<DomainEvent> domainEvents_CasoFeliz(){
@@ -93,34 +95,13 @@ class AddJugadorUseCaseTest {
     private List<DomainEvent> domainEvents_ErrorEsperado(){
 
         Map<JugadorId, Jugador > jugadores = new HashMap<>();
-        jugadores.put(JugadorId.of("xxx-1"), new Jugador(JugadorId.of("xxx-1"), new Name("Prueba")));
-        jugadores.put(JugadorId.of("xxx-2"), new Jugador(JugadorId.of("xxx-2"), new Name("Prueba")));
-        jugadores.put(JugadorId.of("xxx-3"), new Jugador(JugadorId.of("xxx-3"), new Name("Prueba")));
-        jugadores.put(JugadorId.of("xxx-4"), new Jugador(JugadorId.of("xxx-4"), new Name("Prueba")));
-        jugadores.put(JugadorId.of("xxx-5"), new Jugador(JugadorId.of("xxx-5"), new Name("Prueba")));
-        jugadores.put(JugadorId.of("xxx-6"), new Jugador(JugadorId.of("xxx-6"), new Name("Prueba")));
-        jugadores.put(JugadorId.of("xxx-7"), new Jugador(JugadorId.of("xxx-7"), new Name("Prueba")));
-        jugadores.put(JugadorId.of("xxx-8"), new Jugador(JugadorId.of("xxx-8"), new Name("Prueba")));
-        jugadores.put(JugadorId.of("xxx-9"), new Jugador(JugadorId.of("xxx-9"), new Name("Prueba")));
-        jugadores.put(JugadorId.of("xxx-10"), new Jugador(JugadorId.of("xxx-10"), new Name("Prueba")));
-        jugadores.put(JugadorId.of("xxx-11"), new Jugador(JugadorId.of("xxx-11"), new Name("Prueba")));
-        jugadores.put(JugadorId.of("xxx-12"), new Jugador(JugadorId.of("xxx-12"), new Name("Prueba")));
-        jugadores.put(JugadorId.of("xxx-13"), new Jugador(JugadorId.of("xxx-13"), new Name("Prueba")));
-        jugadores.put(JugadorId.of("xxx-14"), new Jugador(JugadorId.of("xxx-14"), new Name("Prueba")));
-        jugadores.put(JugadorId.of("xxx-15"), new Jugador(JugadorId.of("xxx-15"), new Name("Prueba")));
-        jugadores.put(JugadorId.of("xxx-16"), new Jugador(JugadorId.of("xxx-16"), new Name("Prueba")));
-        jugadores.put(JugadorId.of("xxx-17"), new Jugador(JugadorId.of("xxx-17"), new Name("Prueba")));
-        jugadores.put(JugadorId.of("xxx-18"), new Jugador(JugadorId.of("xxx-18"), new Name("Prueba")));
-        jugadores.put(JugadorId.of("xxx-19"), new Jugador(JugadorId.of("xxx-19"), new Name("Prueba")));
-        jugadores.put(JugadorId.of("xxx-20"), new Jugador(JugadorId.of("xxx-20"), new Name("Prueba")));
-        jugadores.put(JugadorId.of("xxx-21"), new Jugador(JugadorId.of("xxx-21"), new Name("Prueba")));
-        jugadores.put(JugadorId.of("xxx-22"), new Jugador(JugadorId.of("xxx-22"), new Name("Prueba")));
-        jugadores.put(JugadorId.of("xxx-23"), new Jugador(JugadorId.of("xxx-23"), new Name("Prueba")));
-        jugadores.put(JugadorId.of("xxx-24"), new Jugador(JugadorId.of("xxx-24"), new Name("Prueba")));
 
+        for(int i = 0; i<24; i++){
+            jugadores.put(JugadorId.of(String.format("xxx-%d", i)), new Jugador(JugadorId.of(String.format("xxx-%d", i)), new Name("Prueba")));
+
+        }
 
         return List.of(
-
                 new JuegoCreado(jugadores));
     }
 
