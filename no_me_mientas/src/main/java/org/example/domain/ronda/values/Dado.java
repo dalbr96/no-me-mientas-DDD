@@ -2,16 +2,33 @@ package org.example.domain.ronda.values;
 
 import co.com.sofka.domain.generic.ValueObject;
 
+import java.util.Objects;
+import java.util.Random;
+
 public class Dado implements ValueObject<Dado.Values> {
 
     private final Integer cara;
     private final Boolean destapado;
 
-    public Dado(Integer cara) {
+    public Dado() {
+
+        Random rand = new Random();
+
+        this.cara = (rand.nextInt(6) + 1);
+        this.destapado = Boolean.FALSE;
+    }
+
+    private Dado(Integer cara){
 
         this.cara = cara;
-        this.destapado = Boolean.FALSE;
+        this.destapado = Boolean.TRUE;
+    }
+    public Dado generarCara(){
+        return new Dado();
+    }
 
+    public Dado destaparCara(){
+        return new Dado(this.cara);
     }
 
     @Override

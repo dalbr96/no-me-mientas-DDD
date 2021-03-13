@@ -1,16 +1,18 @@
 package org.example.domain.ronda;
 
 import co.com.sofka.domain.generic.AggregateEvent;
+import org.example.domain.juego.JuegoChange;
 import org.example.domain.juego.Jugador;
+import org.example.domain.juego.events.JuegoCreado;
 import org.example.domain.juego.values.Dinero;
+import org.example.domain.juego.values.JuegoId;
 import org.example.domain.juego.values.JugadorId;
+import org.example.domain.ronda.events.RondaCreada;
 import org.example.domain.ronda.values.Dado;
 import org.example.domain.ronda.values.Puntaje;
 import org.example.domain.ronda.values.RondaId;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 public class Ronda extends AggregateEvent<RondaId> {
 
@@ -21,8 +23,22 @@ public class Ronda extends AggregateEvent<RondaId> {
     protected List<Dado> dados;
 
 
-    public Ronda(RondaId entityId) {
+    private Ronda(RondaId entityId) {
         super(entityId);
+        subscribe(new RondaChange(this));
+    }
+
+    public Ronda(RondaId entityId, Map<JugadorId, Jugador> jugadoresRonda){
+
+        super(entityId);
+
+        HashMap<JugadorId, Puntaje> puntajes = new HashMap<>();
+
+        jugadoresRonda.forEach((jugadorId, jugador) ->{
+            puntajes.put(jugadorId, new Puntaje());
+        });
+
+        appendChange(new RondaCreada(jugadoresRonda, puntajes)).apply();
     }
 
 }
