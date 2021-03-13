@@ -44,6 +44,11 @@ public class JuegoChange extends EventChange {
 
             juego.hayGanador = Boolean.TRUE;
         });
+
+        apply((RondaIniciada event) ->{
+
+            juego.rondaId = event.getRondaId();
+        });
     }
 
 }

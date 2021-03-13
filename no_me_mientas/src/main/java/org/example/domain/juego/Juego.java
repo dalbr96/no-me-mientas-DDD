@@ -10,10 +10,8 @@ import org.example.domain.juego.values.JugadorId;
 import org.example.domain.juego.values.Name;
 import org.example.domain.ronda.values.RondaId;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Collectors;
 
 
 public class Juego extends AggregateEvent<JuegoId> {
@@ -49,12 +47,27 @@ public class Juego extends AggregateEvent<JuegoId> {
     }
 
     public void iniciarJuego(){
-
         appendChange( new JuegoIniciado()).apply();
     }
 
     public void iniciarRonda(){
-        //TODO: Buscar como conectar agregados mediante eventos.
+        Set<JugadorId> jugadoresId;
+        Map<JugadorId, Name> nombres = new HashMap<>();
+        Map<JugadorId, Dinero> capitales = new HashMap<>();
+
+        jugadoresId = this.jugadores.entrySet().stream().
+                filter(entry -> entry.getValue().capital().value() != 0)
+                .map(Map.Entry::getKey)
+                .collect(Collectors.toSet());
+
+        jugadoresId.forEach(jugadorId -> {
+            nombres.put(jugadorId, this.jugadores.get(jugadorId).nombre());
+            capitales.put(jugadorId, this.jugadores.get(jugadorId).capital());
+        });
+
+        RondaId rondaId = new RondaId();
+
+        appendChange(new RondaIniciada(rondaId, jugadoresId, nombres, capitales)).apply();
     }
 
     public void finalizarJuegoGanador(){

@@ -1,9 +1,15 @@
 package org.example.domain.ronda;
 
 import co.com.sofka.domain.generic.AggregateEvent;
+import co.com.sofka.domain.generic.DomainEvent;
+import org.example.domain.juego.Juego;
 import org.example.domain.juego.Jugador;
+import org.example.domain.juego.factory.JugadorFactory;
 import org.example.domain.juego.values.Dinero;
+import org.example.domain.juego.values.JuegoId;
 import org.example.domain.juego.values.JugadorId;
+import org.example.domain.juego.values.Name;
+import org.example.domain.ronda.events.JugadorAgregadoARonda;
 import org.example.domain.ronda.events.RondaCreada;
 import org.example.domain.ronda.values.Dado;
 import org.example.domain.ronda.values.Puntaje;
@@ -18,6 +24,7 @@ public class Ronda extends AggregateEvent<RondaId> {
     protected Dinero capitalAcumulado;
     protected Set<Etapa> etapas;
     protected List<Dado> dados;
+    protected JuegoId juegoId;
 
 
     private Ronda(RondaId entityId) {
@@ -25,21 +32,41 @@ public class Ronda extends AggregateEvent<RondaId> {
         subscribe(new RondaChange(this));
     }
 
-    public Ronda(RondaId entityId, Map<JugadorId, Jugador> jugadoresRonda){
+    public Ronda(RondaId entityId, JuegoId juegoId, JugadorFactory jugadorFactory){
 
         super(entityId);
-
-        HashMap<JugadorId, Puntaje> puntajes = new HashMap<>();
-
-        jugadoresRonda.forEach((jugadorId, jugador) ->{
-            puntajes.put(jugadorId, new Puntaje());
-        });
-
-        appendChange(new RondaCreada(jugadoresRonda, puntajes)).apply();
+        appendChange(new RondaCreada(entityId, juegoId)).apply();
+        jugadorFactory.jugadores()
+                .forEach(jugador -> agregarJugadorARonda(jugador.identity(), jugador.nombre(), jugador.capital()));
     }
 
-    public void iniciarEtapa(){
-
+    public static Ronda from(RondaId entityId, List<DomainEvent> events){
+        var ronda = new Ronda(entityId);
+        events.forEach(ronda::applyEvent);
+        return ronda;
     }
 
+    private void agregarJugadorARonda(JugadorId jugadorId, Name nombre, Dinero capital){
+        appendChange(new JugadorAgregadoARonda(jugadorId, nombre, capital)).apply();
+    }
+
+    public Map<JugadorId, Jugador> jugadoresRonda() {
+        return jugadoresRonda;
+    }
+
+    public Map<JugadorId, Puntaje> puntajes() {
+        return puntajes;
+    }
+
+    public Dinero capitalAcumulado() {
+        return capitalAcumulado;
+    }
+
+    public Set<Etapa> etapas() {
+        return etapas;
+    }
+
+    public List<Dado> dados() {
+        return dados;
+    }
 }
