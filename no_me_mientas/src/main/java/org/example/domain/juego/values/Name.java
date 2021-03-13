@@ -14,7 +14,6 @@ public class Name implements ValueObject<String> {
         if(name.isBlank()){
             throw new IllegalArgumentException("Por favor, Ingrese un nombre");
         }
-
     }
 
 

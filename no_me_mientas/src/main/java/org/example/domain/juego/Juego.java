@@ -2,13 +2,13 @@ package org.example.domain.juego;
 
 import co.com.sofka.domain.generic.AggregateEvent;
 import co.com.sofka.domain.generic.DomainEvent;
-import org.example.domain.juego.events.JuegoCreado;
-import org.example.domain.juego.events.JuegoFinalizadoGanador;
-import org.example.domain.juego.events.JuegoIniciado;
-import org.example.domain.juego.events.JugadorAnhadido;
+import org.example.domain.juego.events.*;
+import org.example.domain.juego.values.Dinero;
 import org.example.domain.juego.values.JuegoId;
 import org.example.domain.juego.values.JugadorId;
 import org.example.domain.juego.values.Name;
+import org.example.domain.ronda.events.RondaCreada;
+import org.example.domain.ronda.values.RondaId;
 
 import java.util.HashMap;
 import java.util.List;
@@ -21,6 +21,7 @@ public class Juego extends AggregateEvent<JuegoId> {
     protected Map<JugadorId, Jugador> jugadores = new HashMap<>();
     protected Boolean juegoIniciado;
     protected Boolean hayGanador;
+    protected RondaId rondaId;
 
 
     private Juego(JuegoId entityId) {
@@ -29,12 +30,10 @@ public class Juego extends AggregateEvent<JuegoId> {
     }
 
     public Juego(JuegoId entityId, Set<Jugador> jugadores){
-
         super(entityId);
         HashMap<JugadorId, Jugador> jugadoresNuevos = new HashMap<>();
         jugadores.forEach(jugador -> jugadoresNuevos.put(jugador.identity(), jugador));
         appendChange(new JuegoCreado(jugadoresNuevos)).apply();
-
     }
 
     public static Juego from(JuegoId entityId, List<DomainEvent> events){
@@ -47,8 +46,16 @@ public class Juego extends AggregateEvent<JuegoId> {
         appendChange(new JugadorAnhadido(jugadorId, nombre)).apply();
     }
 
+    public void addJugadorConCapital(JugadorId jugadorId, Name nombre, Dinero capital){
+        appendChange(new JugadorAnhadidoConCapital(jugadorId, nombre, capital)).apply();
+    }
+
     public void iniciarJuego(){
         appendChange( new JuegoIniciado()).apply();
+    }
+
+    public void iniciarRonda(){
+        //TODO: Buscar como conectar agregados mediante eventos.
     }
 
     public void finalizarJuegoGanador(){
@@ -66,5 +73,9 @@ public class Juego extends AggregateEvent<JuegoId> {
 
     public Boolean hayGanador() {
         return hayGanador;
+    }
+
+    public RondaId rondaId() {
+        return rondaId;
     }
 }

@@ -1,10 +1,7 @@
 package org.example.domain.juego;
 
 import co.com.sofka.domain.generic.EventChange;
-import org.example.domain.juego.events.JuegoCreado;
-import org.example.domain.juego.events.JuegoFinalizadoGanador;
-import org.example.domain.juego.events.JuegoIniciado;
-import org.example.domain.juego.events.JugadorAnhadido;
+import org.example.domain.juego.events.*;
 import org.example.domain.juego.values.JugadorId;
 
 
@@ -21,6 +18,18 @@ public class JuegoChange extends EventChange {
         });
 
         apply((JugadorAnhadido event) -> {
+
+            if(Boolean.TRUE.equals(juego.juegoIniciado)){
+                throw new IllegalArgumentException("No puede agregar jugadores en un juego iniciado");
+            }
+
+            HashMap<JugadorId, Jugador> jugadoresNuevos = new HashMap<>();
+            juego.jugadores.forEach((jugadorId, jugador)-> jugadoresNuevos.put(jugadorId, jugador));
+            jugadoresNuevos.put(event.getJugadorId(), new Jugador(event.getJugadorId(), event.getNombre()));
+            juego.jugadores = jugadoresNuevos;
+        });
+
+        apply((JugadorAnhadidoConCapital event) -> {
 
             if(Boolean.TRUE.equals(juego.juegoIniciado)){
                 throw new IllegalArgumentException("No puede agregar jugadores en un juego iniciado");

@@ -6,20 +6,18 @@ import org.example.domain.juego.values.JugadorId;
 import org.example.domain.juego.values.Name;
 
 public class JugadorAnhadidoConCapital extends DomainEvent {
+
     private final JugadorId jugadorId;
     private final Name nombre;
     private Dinero capital;
 
-    public JugadorAnhadidoConCapital(JugadorId jugadorId, Name nombre, Dinero capital) {
-        super("nomemientas.JugadorAñadidoConCapital");
+    public JugadorAnhadidoConCapital(JugadorId jugadorId, Name name, Dinero capital){
+        super("nomemientas.JugadorAñadido");
         this.jugadorId = jugadorId;
-        this.nombre = nombre;
+        this.nombre = name;
         this.capital = capital;
     }
 
-    public JugadorId getJugadorId() {
-        return jugadorId;
-    }
 
     public Name getNombre() {
         return nombre;
@@ -27,5 +25,9 @@ public class JugadorAnhadidoConCapital extends DomainEvent {
 
     public Dinero getCapital() {
         return capital;
+    }
+
+    public JugadorId getJugadorId() {
+        return jugadorId;
     }
 }
