@@ -19,21 +19,6 @@ public class Dinero implements ValueObject<Integer> {
     }
 
     @Override
-    public boolean equals(Object o) {
-
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Dinero dinero1 = (Dinero) o;
-        return Objects.equals(dinero, dinero1.dinero);
-
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(dinero);
-    }
-
-    @Override
     public Integer value() {
         return dinero;
     }

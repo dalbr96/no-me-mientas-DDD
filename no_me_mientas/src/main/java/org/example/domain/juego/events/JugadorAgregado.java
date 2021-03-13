@@ -5,13 +5,13 @@ import org.example.domain.juego.values.Dinero;
 import org.example.domain.juego.values.JugadorId;
 import org.example.domain.juego.values.Name;
 
-public class JugadorAnhadidoConCapital extends DomainEvent {
+public class JugadorAgregado extends DomainEvent {
 
     private final JugadorId jugadorId;
     private final Name nombre;
     private Dinero capital;
 
-    public JugadorAnhadidoConCapital(JugadorId jugadorId, Name name, Dinero capital){
+    public JugadorAgregado(JugadorId jugadorId, Name name, Dinero capital){
         super("nomemientas.JugadorAñadido");
         this.jugadorId = jugadorId;
         this.nombre = name;

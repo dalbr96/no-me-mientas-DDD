@@ -18,6 +18,7 @@ public class RondaCreada extends DomainEvent {
     private final Dinero capitalAcumulado;
     private final Set<Etapa> etapas;
 
+
     public RondaCreada(Map<JugadorId, Jugador> jugadoresRonda, Map<JugadorId, Puntaje> puntajes) {
         super("nomemientas.RondaCreada");
         this.jugadoresRonda = jugadoresRonda;

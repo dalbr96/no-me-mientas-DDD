@@ -1,11 +1,8 @@
 package org.example.domain.ronda;
 
 import co.com.sofka.domain.generic.AggregateEvent;
-import org.example.domain.juego.JuegoChange;
 import org.example.domain.juego.Jugador;
-import org.example.domain.juego.events.JuegoCreado;
 import org.example.domain.juego.values.Dinero;
-import org.example.domain.juego.values.JuegoId;
 import org.example.domain.juego.values.JugadorId;
 import org.example.domain.ronda.events.RondaCreada;
 import org.example.domain.ronda.values.Dado;
@@ -39,6 +36,10 @@ public class Ronda extends AggregateEvent<RondaId> {
         });
 
         appendChange(new RondaCreada(jugadoresRonda, puntajes)).apply();
+    }
+
+    public void iniciarEtapa(){
+
     }
 
 }
