@@ -22,7 +22,7 @@ public class AddJugadorUseCase extends UseCase<RequestCommand<AddJugador>, Respo
         var juego = Juego.from(juegoId, retrieveEvents());
 
         if(juego.jugadores().size() > 23){
-            throw new BusinessException(juegoId.value(), "No puede haber más de 24 jugadores");
+            throw new BusinessException(juegoId.value(), "No se puede añadir el jugador porque ya hay 24 jugadores");
         }
 
         juego.addJugador(jugadorId, nombre);
