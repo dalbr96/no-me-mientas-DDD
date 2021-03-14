@@ -6,7 +6,6 @@ import co.com.sofka.business.support.RequestCommand;
 import co.com.sofka.business.support.ResponseEvents;
 import org.example.domain.juego.Juego;
 import org.example.domain.juego.command.IniciarJuego;
-import org.example.domain.juego.factory.JugadorFactory;
 
 public class IniciarJuegoUseCase extends UseCase<RequestCommand<IniciarJuego>, ResponseEvents> {
     @Override

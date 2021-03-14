@@ -2,13 +2,13 @@ package org.example.domain.ronda;
 
 import co.com.sofka.domain.generic.AggregateEvent;
 import co.com.sofka.domain.generic.DomainEvent;
-import org.example.domain.juego.Juego;
 import org.example.domain.juego.Jugador;
 import org.example.domain.juego.factory.JugadorFactory;
 import org.example.domain.juego.values.Dinero;
 import org.example.domain.juego.values.JuegoId;
 import org.example.domain.juego.values.JugadorId;
 import org.example.domain.juego.values.Name;
+import org.example.domain.ronda.events.DadosLanzados;
 import org.example.domain.ronda.events.JugadorAgregadoARonda;
 import org.example.domain.ronda.events.RondaCreada;
 import org.example.domain.ronda.values.Dado;
@@ -19,7 +19,7 @@ import java.util.*;
 
 public class Ronda extends AggregateEvent<RondaId> {
 
-    protected Map<JugadorId, Jugador> jugadoresRonda;
+    protected Map<JugadorId, Dinero> capitalJugadores;
     protected Map<JugadorId, Puntaje> puntajes;
     protected Dinero capitalAcumulado;
     protected Set<Etapa> etapas;
@@ -32,12 +32,10 @@ public class Ronda extends AggregateEvent<RondaId> {
         subscribe(new RondaChange(this));
     }
 
-    public Ronda(RondaId entityId, JuegoId juegoId, JugadorFactory jugadorFactory){
+    public Ronda(RondaId entityId, JuegoId juegoId, Map<JugadorId, Dinero> capitalJugadores){
 
         super(entityId);
-        appendChange(new RondaCreada(entityId, juegoId)).apply();
-        jugadorFactory.jugadores()
-                .forEach(jugador -> agregarJugadorARonda(jugador.identity(), jugador.nombre(), jugador.capital()));
+        appendChange(new RondaCreada(entityId, juegoId, capitalJugadores)).apply();
     }
 
     public static Ronda from(RondaId entityId, List<DomainEvent> events){
@@ -50,9 +48,12 @@ public class Ronda extends AggregateEvent<RondaId> {
         appendChange(new JugadorAgregadoARonda(jugadorId, nombre, capital)).apply();
     }
 
-    public Map<JugadorId, Jugador> jugadoresRonda() {
-        return jugadoresRonda;
+    public void lanzarDados(){
+        for(int i = 0; i < 6; i++){
+            appendChange(new DadosLanzados()).apply();
+        }
     }
+
 
     public Map<JugadorId, Puntaje> puntajes() {
         return puntajes;

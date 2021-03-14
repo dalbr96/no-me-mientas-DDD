@@ -12,18 +12,16 @@ import java.util.Set;
 public class RondaIniciada extends DomainEvent {
 
     private Set<JugadorId> jugadoresIds;
-    private Map<JugadorId , Name> nombres;
     private Map<JugadorId, Dinero> capitales;
     private RondaId rondaId;
 
     public RondaIniciada(RondaId rondaId, Set<JugadorId> jugadoresIds,
-                         Map<JugadorId , Name> nombres, Map<JugadorId, Dinero> capitales) {
+                         Map<JugadorId, Dinero> capitales) {
 
         super("nomemientas.RondaIniciada");
 
         this.rondaId = rondaId;
         this.jugadoresIds = jugadoresIds;
-        this.nombres = nombres;
         this.capitales = capitales;
 
     }
@@ -32,9 +30,6 @@ public class RondaIniciada extends DomainEvent {
         return jugadoresIds;
     }
 
-    public Map<JugadorId, Name> getNombres() {
-        return nombres;
-    }
 
     public Map<JugadorId, Dinero> getCapitales() {
         return capitales;

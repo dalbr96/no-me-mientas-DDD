@@ -20,19 +20,13 @@ public class CrearRondaUseCase extends UseCase<TriggeredEvent<RondaIniciada>, Re
         var event = rondaIniciadaTriggeredEvent.getDomainEvent();
         var rondaId = event.getRondaId();
         var juegoId = JuegoId.of(event.aggregateRootId());
-
-        var factory = JugadorFactory.builder();
-        event.getNombres().forEach(
-                (jugadorId, nombre) -> factory.nuevoJugador(jugadorId,
-                        nombre,
-                        event.getCapitales().get(jugadorId))
-        );
+        var capitales = event.getCapitales();
 
         if(event.getJugadoresIds().size() < 2){
             throw new BusinessException(rondaId.value(), "No se puede iniciar ronda por falta de jugadores");
         }
 
-        var ronda = new Ronda(rondaId, juegoId, factory);
+        var ronda = new Ronda(rondaId, juegoId, capitales);
 
 
         var commits = ronda.getUncommittedChanges();
