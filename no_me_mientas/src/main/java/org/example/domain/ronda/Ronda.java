@@ -5,9 +5,7 @@ import co.com.sofka.domain.generic.DomainEvent;
 import org.example.domain.juego.values.Dinero;
 import org.example.domain.juego.values.JuegoId;
 import org.example.domain.juego.values.JugadorId;
-import org.example.domain.ronda.events.DadoLanzado;
-import org.example.domain.ronda.events.EtapaCreada;
-import org.example.domain.ronda.events.RondaCreada;
+import org.example.domain.ronda.events.*;
 import org.example.domain.ronda.values.Dado;
 import org.example.domain.ronda.values.Puntaje;
 import org.example.domain.ronda.values.RondaId;
@@ -50,7 +48,15 @@ public class Ronda extends AggregateEvent<RondaId> {
     }
 
     public void crearEtapa(){
-        appendChange(new EtapaCreada( capitalJugadores)).apply();
+        appendChange(new EtapaCreada(capitalJugadores)).apply();
+    }
+
+    public void destaparDados(){
+        appendChange(new DadosDestapados()).apply();
+    }
+
+    public void asignarDadosAEtapa(){
+        appendChange(new DadosAsignadosAEtapa()).apply();
     }
 
     public Set<JugadorId> jugadoresRonda() {

@@ -2,9 +2,7 @@ package org.example.domain.ronda;
 
 import co.com.sofka.domain.generic.EventChange;
 import org.example.domain.juego.values.Dinero;
-import org.example.domain.ronda.events.DadoLanzado;
-import org.example.domain.ronda.events.EtapaCreada;
-import org.example.domain.ronda.events.RondaCreada;
+import org.example.domain.ronda.events.*;
 import org.example.domain.ronda.values.Dado;
 import org.example.domain.ronda.values.EtapaId;
 import org.example.domain.ronda.values.Puntaje;
@@ -13,6 +11,8 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 public class RondaChange extends EventChange {
 
@@ -49,6 +49,29 @@ public class RondaChange extends EventChange {
             //TODO: Cambiar esActual a cada etapa!!
 
             ronda.etapas.add(new Etapa(new EtapaId(), new Dinero(apuestaMaxima)));
+        });
+
+        apply((DadosDestapados event) -> {
+            if(ronda.etapas.size() == 1){
+                for(int i = 0; i < 3; i++){
+                    ronda.dados().set(i, ronda.dados().get(i).destaparCara()) ;
+                }
+            }
+            if(ronda.etapas.size() == 2){
+                for(int i = 0; i < 5; i++){
+                    ronda.dados().set(i, ronda.dados().get(i).destaparCara()) ;
+                }
+            }
+            if(ronda.etapas.size() == 3){
+                for(int i = 0; i <= 5; i++){
+                    ronda.dados().set(i, ronda.dados().get(i).destaparCara()) ;
+                }
+            }
+        });
+
+        apply((DadosAsignadosAEtapa event) -> {
+            var dados = ronda.dados().stream().filter(dado -> dado.value().estaDestapado()).collect(Collectors.toList());
+            ronda.etapas.iterator().next().agregarDados(dados);
         });
     }
 }
