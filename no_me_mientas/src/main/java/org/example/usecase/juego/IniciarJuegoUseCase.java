@@ -18,7 +18,7 @@ public class IniciarJuegoUseCase extends UseCase<RequestCommand<IniciarJuego>, R
         if(juego.estaIniciado()){
             throw new BusinessException(juego.identity().value(), "El juego ya está iniciado");
         }
-        if(juego.jugadores().size() > 23){
+        if(juego.jugadores().size() > 24){
             throw new BusinessException(juego.identity().value(), "No se puede empezar el juego, hay más jugadores que los permitidos");
         }
 

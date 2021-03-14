@@ -141,7 +141,7 @@ class IniciarJuegoUseCaseTest {
         List<DomainEvent> events = new ArrayList<>();
         var JuegoCreado = new JuegoCreado(juegoId);
         events.add(JuegoCreado);
-        for(int i = 0; i <24; i++){
+        for(int i = 0; i <=24; i++){
             events.add( new JugadorAgregado(JugadorId.of(String.format("xxxx-%d", i)), new Name("Alejandro"), new Dinero(500)));
         }
         return events;
