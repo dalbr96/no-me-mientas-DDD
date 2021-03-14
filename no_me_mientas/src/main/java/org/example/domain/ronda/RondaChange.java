@@ -46,8 +46,7 @@ public class RondaChange extends EventChange {
             Integer apuestaMaxima = capitales.values().stream()
                     .max(Comparator.comparing(Dinero::value)).get().value();
 
-            //TODO: Cambiar esActual a cada etapa!!
-
+            ronda.etapas.forEach(etapa -> etapa.cambiarActual());
             ronda.etapas.add(new Etapa(new EtapaId(), new Dinero(apuestaMaxima)));
         });
 

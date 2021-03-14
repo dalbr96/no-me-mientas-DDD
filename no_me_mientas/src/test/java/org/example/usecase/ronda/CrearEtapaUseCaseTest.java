@@ -53,8 +53,8 @@ class CrearEtapaUseCaseTest {
         var etapa =         rondaReconstruida.etapas().iterator().next();
 
         Assertions.assertEquals(1, rondaReconstruida.etapas().size());
-        Assertions.assertEquals(400, etapa.getApuestaMaxima().value());
-        Assertions.assertEquals(Boolean.TRUE, etapa.getEsActual());
+        Assertions.assertEquals(400, etapa.apuestaMaxima().value());
+        Assertions.assertEquals(Boolean.TRUE, etapa.esActual());
 
     }
 

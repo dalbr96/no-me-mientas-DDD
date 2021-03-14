@@ -19,6 +19,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -149,45 +150,27 @@ class DestaparDadosUseCaseTest {
         );
     }
     private List<DomainEvent> domainEventList_DosEtapas() {
-        var rondaId = RondaId.of("xxx");
-        var juegoId = JuegoId.of("xxx-j");
-
-        var jugadores = Set.of(
-                JugadorId.of("xxx-1"),
-                JugadorId.of("xxx-2")
-        );
 
         var capitales = Map.of(
                 JugadorId.of("xxx-1"), new Dinero(400),
                 JugadorId.of("xxx-2"), new Dinero(300)
         );
 
-        return List.of(
-                new RondaCreada(rondaId, juegoId, jugadores, capitales),
-                new DadoLanzado(),
-                new EtapaCreada(capitales)
-                );
+        var eventosDeDominio = new ArrayList<>(domainEventList());
+        eventosDeDominio.add(new EtapaCreada(capitales));
+
+        return eventosDeDominio;
     }
+
     private List<DomainEvent> domainEventList_TresEtapas() {
-        var rondaId = RondaId.of("xxx");
-        var juegoId = JuegoId.of("xxx-j");
-
-        var jugadores = Set.of(
-                JugadorId.of("xxx-1"),
-                JugadorId.of("xxx-2")
-        );
-
         var capitales = Map.of(
                 JugadorId.of("xxx-1"), new Dinero(400),
                 JugadorId.of("xxx-2"), new Dinero(300)
         );
 
-        return List.of(
-                new RondaCreada(rondaId, juegoId, jugadores, capitales),
-                new DadoLanzado(),
-                new EtapaCreada(capitales),
-                new EtapaCreada(capitales)
+        var eventosDeDominio = new ArrayList<>(domainEventList_DosEtapas());
+        eventosDeDominio.add(new EtapaCreada(capitales));
 
-        );
+        return eventosDeDominio;
     }
 }
