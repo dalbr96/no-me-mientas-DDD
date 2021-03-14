@@ -2,9 +2,9 @@ package org.example.domain.ronda.events;
 
 import co.com.sofka.domain.generic.DomainEvent;
 
-public class DadosLanzados extends DomainEvent {
+public class DadoLanzado extends DomainEvent {
 
-    public DadosLanzados() {
+    public DadoLanzado() {
         super("nomemientas.LanzarDado");
     }
 }

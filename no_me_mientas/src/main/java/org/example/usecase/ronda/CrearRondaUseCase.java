@@ -1,4 +1,4 @@
-package org.example.usecase;
+package org.example.usecase.ronda;
 
 import co.com.sofka.business.generic.BusinessException;
 import co.com.sofka.business.generic.UseCase;
@@ -16,13 +16,14 @@ public class CrearRondaUseCase extends UseCase<TriggeredEvent<RondaIniciada>, Re
         var event = rondaIniciadaTriggeredEvent.getDomainEvent();
         var rondaId = event.getRondaId();
         var juegoId = JuegoId.of(event.aggregateRootId());
+        var jugadores = event.getJugadoresIds();
         var capitales = event.getCapitales();
 
         if(event.getJugadoresIds().size() < 2){
             throw new BusinessException(rondaId.value(), "No se puede iniciar ronda por falta de jugadores");
         }
 
-        var ronda = new Ronda(rondaId, juegoId, capitales);
+        var ronda = new Ronda(rondaId, juegoId, jugadores, capitales);
 
 
         var commits = ronda.getUncommittedChanges();

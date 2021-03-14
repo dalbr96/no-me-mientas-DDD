@@ -1,4 +1,4 @@
-package org.example.usecase;
+package org.example.usecase.ronda;
 
 import co.com.sofka.business.generic.UseCase;
 import co.com.sofka.business.support.RequestCommand;

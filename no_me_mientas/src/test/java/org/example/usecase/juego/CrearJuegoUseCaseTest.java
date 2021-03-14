@@ -1,23 +1,19 @@
-package org.example.usecase;
+package org.example.usecase.juego;
 
 import co.com.sofka.business.generic.UseCaseHandler;
 import co.com.sofka.business.support.RequestCommand;
 import org.example.domain.juego.Juego;
-import org.example.domain.juego.Jugador;
 import org.example.domain.juego.command.CrearJuego;
 import org.example.domain.juego.events.JuegoCreado;
 import org.example.domain.juego.values.Dinero;
 import org.example.domain.juego.values.JugadorId;
 import org.example.domain.juego.values.Name;
+import org.example.usecase.juego.CrearJuegoUseCase;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Set;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class CrearJuegoUseCaseTest {
 

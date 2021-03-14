@@ -12,15 +12,17 @@ public class RondaCreada extends DomainEvent {
 
     private final RondaId rondaId;
     private final JuegoId juegoId;
+    private final Set<JugadorId> jugadoresRonda;
     private Map<JugadorId, Dinero> capitalJugadores;
 
 
-    public RondaCreada( RondaId rondaId, JuegoId juegoId, Map<JugadorId, Dinero> capitalJugadores) {
+    public RondaCreada( RondaId rondaId, JuegoId juegoId, Set<JugadorId> jugadoresRonda, Map<JugadorId, Dinero> capitalJugadores) {
 
         super("nomemientas.RondaCreada");
         this.rondaId = rondaId;
         this.juegoId = juegoId;
         this.capitalJugadores = capitalJugadores;
+        this.jugadoresRonda = jugadoresRonda;
     }
 
     public RondaId getRondaId() {
@@ -31,7 +33,12 @@ public class RondaCreada extends DomainEvent {
         return juegoId;
     }
 
+    public Set<JugadorId> getJugadoresRonda() {
+        return jugadoresRonda;
+    }
+
     public Map<JugadorId, Dinero> getCapitalJugadores() {
         return capitalJugadores;
     }
+
 }

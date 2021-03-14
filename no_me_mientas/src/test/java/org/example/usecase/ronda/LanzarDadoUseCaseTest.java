@@ -1,4 +1,4 @@
-package org.example.usecase;
+package org.example.usecase.ronda;
 
 
 import co.com.sofka.business.generic.UseCaseHandler;
@@ -13,18 +13,15 @@ import org.example.domain.ronda.command.LanzarDados;
 import org.example.domain.ronda.events.RondaCreada;
 import org.example.domain.ronda.values.Dado;
 import org.example.domain.ronda.values.RondaId;
+import org.example.usecase.ronda.LanzarDadoUseCase;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -62,13 +59,18 @@ class LanzarDadoUseCaseTest {
         var rondaId = RondaId.of("xxx");
         var juegoId = JuegoId.of("xxx-j");
 
+        var jugadores = Set.of(
+                JugadorId.of("xxx-1"),
+                JugadorId.of("xxx-2")
+        );
+
         var capitales = Map.of(
                 JugadorId.of("xxx-1"), new Dinero(400),
                 JugadorId.of("xxx-2"), new Dinero(300)
         );
 
         return List.of(
-                new RondaCreada(rondaId, juegoId, capitales)
+                new RondaCreada(rondaId, juegoId, jugadores, capitales)
         );
     }
 

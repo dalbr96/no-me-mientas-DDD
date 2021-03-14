@@ -1,4 +1,4 @@
-package org.example.usecase;
+package org.example.usecase.juego;
 
 import co.com.sofka.business.generic.BusinessException;
 import co.com.sofka.business.generic.UseCase;

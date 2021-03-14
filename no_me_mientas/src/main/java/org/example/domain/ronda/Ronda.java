@@ -2,14 +2,11 @@ package org.example.domain.ronda;
 
 import co.com.sofka.domain.generic.AggregateEvent;
 import co.com.sofka.domain.generic.DomainEvent;
-import org.example.domain.juego.Jugador;
-import org.example.domain.juego.factory.JugadorFactory;
 import org.example.domain.juego.values.Dinero;
 import org.example.domain.juego.values.JuegoId;
 import org.example.domain.juego.values.JugadorId;
-import org.example.domain.juego.values.Name;
-import org.example.domain.ronda.events.DadosLanzados;
-import org.example.domain.ronda.events.JugadorAgregadoARonda;
+import org.example.domain.ronda.events.DadoLanzado;
+import org.example.domain.ronda.events.EtapaCreada;
 import org.example.domain.ronda.events.RondaCreada;
 import org.example.domain.ronda.values.Dado;
 import org.example.domain.ronda.values.Puntaje;
@@ -19,6 +16,7 @@ import java.util.*;
 
 public class Ronda extends AggregateEvent<RondaId> {
 
+    protected Set<JugadorId> jugadoresRonda;
     protected Map<JugadorId, Dinero> capitalJugadores;
     protected Map<JugadorId, Puntaje> puntajes;
     protected Dinero capitalAcumulado;
@@ -32,10 +30,10 @@ public class Ronda extends AggregateEvent<RondaId> {
         subscribe(new RondaChange(this));
     }
 
-    public Ronda(RondaId entityId, JuegoId juegoId, Map<JugadorId, Dinero> capitalJugadores){
+    public Ronda(RondaId entityId, JuegoId juegoId, Set<JugadorId> jugadoresRonda, Map<JugadorId, Dinero> capitalJugadores){
 
         super(entityId);
-        appendChange(new RondaCreada(entityId, juegoId, capitalJugadores)).apply();
+        appendChange(new RondaCreada(entityId, juegoId, jugadoresRonda, capitalJugadores)).apply();
     }
 
     public static Ronda from(RondaId entityId, List<DomainEvent> events){
@@ -44,16 +42,20 @@ public class Ronda extends AggregateEvent<RondaId> {
         return ronda;
     }
 
-    private void agregarJugadorARonda(JugadorId jugadorId, Name nombre, Dinero capital){
-        appendChange(new JugadorAgregadoARonda(jugadorId, nombre, capital)).apply();
-    }
 
     public void lanzarDados(){
         for(int i = 0; i < 6; i++){
-            appendChange(new DadosLanzados()).apply();
+            appendChange(new DadoLanzado()).apply();
         }
     }
 
+    public void crearEtapa(){
+        appendChange(new EtapaCreada( capitalJugadores)).apply();
+    }
+
+    public Set<JugadorId> jugadoresRonda() {
+        return jugadoresRonda;
+    }
 
     public Map<JugadorId, Puntaje> puntajes() {
         return puntajes;

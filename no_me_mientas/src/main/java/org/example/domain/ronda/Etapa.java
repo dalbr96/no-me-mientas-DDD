@@ -7,18 +7,34 @@ import org.example.domain.juego.values.JugadorId;
 import org.example.domain.ronda.values.Apuesta;
 import org.example.domain.ronda.values.EtapaId;
 
+import java.util.HashMap;
 import java.util.Map;
 
 public class Etapa extends Entity<EtapaId> {
 
-    private final Map<JugadorId, Jugador> participantesEtapa;
     private Dinero apuestaMaxima;
     private Map<JugadorId, Apuesta> turnos;
+    private Boolean esActual;
 
 
-    private Etapa(EtapaId entityId, Map<JugadorId, Jugador> participantesEtapa) {
+    public Etapa(EtapaId entityId, Dinero apuestaMaxima){
         super(entityId);
-        this.participantesEtapa = participantesEtapa;
+        this.apuestaMaxima = apuestaMaxima;
+        this.turnos = new HashMap<>();
+        this.esActual = Boolean.TRUE;
     }
+
+    public Dinero getApuestaMaxima() {
+        return apuestaMaxima;
+    }
+
+    public Map<JugadorId, Apuesta> getTurnos() {
+        return turnos;
+    }
+
+    public Boolean getEsActual() {
+        return esActual;
+    }
+
 
 }

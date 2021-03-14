@@ -1,4 +1,4 @@
-package org.example.usecase;
+package org.example.usecase.ronda;
 
 import co.com.sofka.business.generic.BusinessException;
 import co.com.sofka.business.generic.UseCaseHandler;
@@ -6,10 +6,10 @@ import co.com.sofka.business.support.TriggeredEvent;
 import org.example.domain.juego.events.RondaIniciada;
 import org.example.domain.juego.values.Dinero;
 import org.example.domain.juego.values.JugadorId;
-import org.example.domain.juego.values.Name;
 import org.example.domain.ronda.Ronda;
 import org.example.domain.ronda.events.RondaCreada;
 import org.example.domain.ronda.values.RondaId;
+import org.example.usecase.ronda.CrearRondaUseCase;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -45,7 +45,7 @@ class CrearRondaUseCaseTest {
 
         Assertions.assertEquals("jjj", rondaCreada.getJuegoId().value());
         Assertions.assertEquals(0, rondaIniciada.capitalAcumulado().value());
-
+        Assertions.assertEquals(2, rondaIniciada.jugadoresRonda().size());
         Assertions.assertEquals(0, rondaIniciada.puntajes().get(JugadorId.of("xxx-1")).value());
         Assertions.assertEquals(0, rondaIniciada.puntajes().get(JugadorId.of("xxx-2")).value());
     }
