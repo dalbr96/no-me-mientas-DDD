@@ -13,7 +13,6 @@ public class Dado implements ValueObject<Dado.Values> {
     public Dado() {
 
         Random rand = new Random();
-
         this.cara = (rand.nextInt(6) + 1);
         this.destapado = Boolean.FALSE;
     }
@@ -23,11 +22,9 @@ public class Dado implements ValueObject<Dado.Values> {
         this.cara = cara;
         this.destapado = Boolean.TRUE;
     }
-    public Dado generarCara(){
-        return new Dado();
-    }
 
     public Dado destaparCara(){
+
         return new Dado(this.cara);
     }
 

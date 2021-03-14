@@ -24,10 +24,6 @@ class CrearRondaUseCaseTest {
 
         var rondaId = RondaId.of("xxx");
         var jugadoresId = Set.of(JugadorId.of("xxx-1"), JugadorId.of("xxx-2"));
-        var nombres = Map.of(
-                JugadorId.of("xxx-1"), new Name("Daniel"),
-                JugadorId.of("xxx-2"), new Name("Alejandro")
-                );
         var capitales = Map.of(
                 JugadorId.of("xxx-1"), new Dinero(400),
                 JugadorId.of("xxx-2"), new Dinero(300)
