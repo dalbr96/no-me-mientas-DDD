@@ -3,19 +3,18 @@ package org.example.domain.juego.events;
 import co.com.sofka.domain.generic.DomainEvent;
 import org.example.domain.juego.values.Dinero;
 import org.example.domain.juego.values.JugadorId;
-import org.example.domain.juego.values.Name;
 import org.example.domain.ronda.values.RondaId;
 
+import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 public class RondaIniciada extends DomainEvent {
 
-    private Set<JugadorId> jugadoresIds;
+    private List<JugadorId> jugadoresIds;
     private Map<JugadorId, Dinero> capitales;
     private RondaId rondaId;
 
-    public RondaIniciada(RondaId rondaId, Set<JugadorId> jugadoresIds,
+    public RondaIniciada(RondaId rondaId, List<JugadorId> jugadoresIds,
                          Map<JugadorId, Dinero> capitales) {
 
         super("nomemientas.RondaIniciada");
@@ -26,7 +25,7 @@ public class RondaIniciada extends DomainEvent {
 
     }
 
-    public Set<JugadorId> getJugadoresIds() {
+    public List<JugadorId> getJugadoresIds() {
         return jugadoresIds;
     }
 

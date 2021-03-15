@@ -106,7 +106,7 @@ class AsignarDadosDestapadosAEtapaUseCaseTest {
         var rondaId = RondaId.of("xxx");
         var juegoId = JuegoId.of("xxx-j");
 
-        var jugadores = Set.of(
+        var jugadores = List.of(
                 JugadorId.of("xxx-1"),
                 JugadorId.of("xxx-2")
         );

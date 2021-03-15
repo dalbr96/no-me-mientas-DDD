@@ -54,7 +54,7 @@ class IniciarJuegoUseCaseTest {
 
         var juegoReconstruido = Juego.from(juegoId, eventos);
 
-        Assertions.assertEquals(2, juegoReconstruido.jugadores().size());
+        Assertions.assertEquals(3, juegoReconstruido.jugadores().size());
 
         Assertions.assertEquals("Daniel", juegoReconstruido.jugadores().get(JugadorId.of("xxx-1")).nombre().value());
         Assertions.assertEquals(200, juegoReconstruido.jugadores().get(JugadorId.of("xxx-1")).capital().value());
@@ -124,8 +124,10 @@ class IniciarJuegoUseCaseTest {
         List<DomainEvent> eventos =  List.of(
                 new JuegoCreado(juegoId),
                 new JugadorAgregado(JugadorId.of("xxx-1"), new Name("Daniel"), new Dinero(200)),
-                new JugadorAgregado(JugadorId.of("xxx-2"), new Name("Alejandro"), new Dinero(200))
-                );
+                new JugadorAgregado(JugadorId.of("xxx-2"), new Name("Alejandro"), new Dinero(200)),
+                new JugadorAgregado(JugadorId.of("xxx-3"), new Name("Irenarco"), new Dinero(200))
+
+        );
         return eventos;
     }
 

@@ -6,6 +6,7 @@ import org.example.domain.juego.values.Dinero;
 import org.example.domain.juego.values.JuegoId;
 import org.example.domain.juego.values.JugadorId;
 import org.example.domain.ronda.events.*;
+import org.example.domain.ronda.values.Apuesta;
 import org.example.domain.ronda.values.Dado;
 import org.example.domain.ronda.values.Puntaje;
 import org.example.domain.ronda.values.RondaId;
@@ -14,7 +15,7 @@ import java.util.*;
 
 public class Ronda extends AggregateEvent<RondaId> {
 
-    protected Set<JugadorId> jugadoresRonda;
+    protected List<JugadorId> jugadoresRonda;
     protected Map<JugadorId, Dinero> capitalJugadores;
     protected Map<JugadorId, Puntaje> puntajes;
     protected Dinero capitalAcumulado;
@@ -28,7 +29,7 @@ public class Ronda extends AggregateEvent<RondaId> {
         subscribe(new RondaChange(this));
     }
 
-    public Ronda(RondaId entityId, JuegoId juegoId, Set<JugadorId> jugadoresRonda, Map<JugadorId, Dinero> capitalJugadores){
+    public Ronda(RondaId entityId, JuegoId juegoId, List<JugadorId> jugadoresRonda, Map<JugadorId, Dinero> capitalJugadores){
 
         super(entityId);
         appendChange(new RondaCreada(entityId, juegoId, jugadoresRonda, capitalJugadores)).apply();
@@ -48,6 +49,8 @@ public class Ronda extends AggregateEvent<RondaId> {
     }
 
     public void crearEtapa(){
+
+        //TODO: FILTRAR JUGADORES ETAPAS!
         appendChange(new EtapaCreada(capitalJugadores)).apply();
     }
 
@@ -59,7 +62,11 @@ public class Ronda extends AggregateEvent<RondaId> {
         appendChange(new DadosAsignadosAEtapa()).apply();
     }
 
-    public Set<JugadorId> jugadoresRonda() {
+    public void asignarTurnos(){
+        appendChange(new TurnosAsignados()).apply();
+    }
+
+    public List<JugadorId> jugadoresRonda() {
         return jugadoresRonda;
     }
 

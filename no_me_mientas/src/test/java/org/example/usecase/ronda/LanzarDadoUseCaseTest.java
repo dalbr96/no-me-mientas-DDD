@@ -13,7 +13,6 @@ import org.example.domain.ronda.command.LanzarDados;
 import org.example.domain.ronda.events.RondaCreada;
 import org.example.domain.ronda.values.Dado;
 import org.example.domain.ronda.values.RondaId;
-import org.example.usecase.ronda.LanzarDadoUseCase;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -59,7 +58,7 @@ class LanzarDadoUseCaseTest {
         var rondaId = RondaId.of("xxx");
         var juegoId = JuegoId.of("xxx-j");
 
-        var jugadores = Set.of(
+        var jugadores = List.of(
                 JugadorId.of("xxx-1"),
                 JugadorId.of("xxx-2")
         );

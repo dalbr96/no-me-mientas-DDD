@@ -51,13 +51,13 @@ public class Juego extends AggregateEvent<JuegoId> {
     }
 
     public void iniciarRonda(){
-        Set<JugadorId> jugadoresId;
+        List<JugadorId> jugadoresId;
         Map<JugadorId, Dinero> capitales = new HashMap<>();
 
         jugadoresId = this.jugadores.entrySet().stream().
                 filter(entry -> entry.getValue().capital().value() != 0)
                 .map(Map.Entry::getKey)
-                .collect(Collectors.toSet());
+                .collect(Collectors.toList());
 
         jugadoresId.forEach(jugadorId -> {
             capitales.put(jugadorId, this.jugadores.get(jugadorId).capital());

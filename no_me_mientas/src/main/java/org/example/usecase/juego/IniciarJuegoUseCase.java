@@ -8,6 +8,10 @@ import org.example.domain.juego.Juego;
 import org.example.domain.juego.command.IniciarJuego;
 
 public class IniciarJuegoUseCase extends UseCase<RequestCommand<IniciarJuego>, ResponseEvents> {
+
+    public static final int MINIMO_JUGADORES = 3;
+    public static final int MAXIMO_JUGADORES = 24;
+
     @Override
     public void executeUseCase(RequestCommand<IniciarJuego> iniciarJuegoRequestCommand) {
 
@@ -18,11 +22,11 @@ public class IniciarJuegoUseCase extends UseCase<RequestCommand<IniciarJuego>, R
         if(juego.estaIniciado()){
             throw new BusinessException(juego.identity().value(), "El juego ya está iniciado");
         }
-        if(juego.jugadores().size() > 24){
+        if(juego.jugadores().size() > MAXIMO_JUGADORES){
             throw new BusinessException(juego.identity().value(), "No se puede empezar el juego, hay más jugadores que los permitidos");
         }
 
-        if (juego.jugadores().size() < 2) {
+        if (juego.jugadores().size() < MINIMO_JUGADORES) {
             throw new BusinessException(juego.identity().value(), "Se necesitan al menos 2 jugadores para comenzar el juego.");
         }
 

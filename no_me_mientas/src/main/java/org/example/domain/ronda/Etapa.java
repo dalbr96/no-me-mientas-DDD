@@ -14,10 +14,11 @@ import java.util.Map;
 
 public class Etapa extends Entity<EtapaId> {
 
-    private Dinero apuestaMaxima;
     private Map<JugadorId, Apuesta> turnos;
-    private Boolean esActual;
     private List<Dado> dadosDestapados;
+    private final Dinero apuestaMaxima;
+    private List<JugadorId> ordenTurnos;
+    private Boolean esActual;
 
 
     public Etapa(EtapaId entityId, Dinero apuestaMaxima){
@@ -26,6 +27,7 @@ public class Etapa extends Entity<EtapaId> {
         this.turnos = new HashMap<>();
         this.esActual = Boolean.TRUE;
         this.dadosDestapados = new ArrayList<>();
+        this.ordenTurnos = new ArrayList<>();
     }
 
     public void agregarDados(List<Dado> dados){
@@ -36,6 +38,11 @@ public class Etapa extends Entity<EtapaId> {
         this.esActual = Boolean.FALSE;
     }
 
+    public void asignarOrden(List<JugadorId> ordenTurnos){this.ordenTurnos = ordenTurnos;}
+
+    public List<JugadorId> orden() {
+        return ordenTurnos;
+    }
 
     public Dinero apuestaMaxima() {
         return apuestaMaxima;

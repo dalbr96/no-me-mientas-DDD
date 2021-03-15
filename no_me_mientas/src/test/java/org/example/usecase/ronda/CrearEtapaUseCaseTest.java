@@ -99,7 +99,7 @@ class CrearEtapaUseCaseTest {
         var rondaId = RondaId.of("xxx");
         var juegoId = JuegoId.of("xxx-j");
 
-        var jugadores = Set.of(
+        var jugadores = List.of(
                 JugadorId.of("xxx-1"),
                 JugadorId.of("xxx-2")
         );
@@ -137,7 +137,7 @@ class CrearEtapaUseCaseTest {
         var rondaId = RondaId.of("xxx");
         var juegoId = JuegoId.of("xxx-j");
 
-        var jugadores = Set.of(
+        var jugadores = List.of(
                 JugadorId.of("xxx-1")
         );
 

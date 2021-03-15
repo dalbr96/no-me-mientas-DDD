@@ -9,10 +9,10 @@ import org.example.domain.juego.values.JugadorId;
 import org.example.domain.ronda.Ronda;
 import org.example.domain.ronda.events.RondaCreada;
 import org.example.domain.ronda.values.RondaId;
-import org.example.usecase.ronda.CrearRondaUseCase;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -23,7 +23,7 @@ class CrearRondaUseCaseTest {
     void crearRonda(){
 
         var rondaId = RondaId.of("xxx");
-        var jugadoresId = Set.of(JugadorId.of("xxx-1"), JugadorId.of("xxx-2"));
+        var jugadoresId = List.of(JugadorId.of("xxx-1"), JugadorId.of("xxx-2"));
         var capitales = Map.of(
                 JugadorId.of("xxx-1"), new Dinero(400),
                 JugadorId.of("xxx-2"), new Dinero(300)
@@ -53,7 +53,7 @@ class CrearRondaUseCaseTest {
     @Test
     void crearRonda_FaltaDeJugadores(){
         var rondaId = RondaId.of("xxx");
-        var jugadoresId = Set.of(JugadorId.of("xxx-1"));
+        var jugadoresId = List.of(JugadorId.of("xxx-1"));
         var capitales = Map.of(
                 JugadorId.of("xxx-1"), new Dinero(400)
         );

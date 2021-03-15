@@ -8,6 +8,9 @@ import org.example.domain.juego.Juego;
 import org.example.domain.juego.command.AgregarJugador;
 
 public class AgregarJugadorUseCase extends UseCase<RequestCommand<AgregarJugador>, ResponseEvents> {
+
+    public static final int MAXIMO_JUGADORES_AÑADIR = 23;
+
     @Override
     public void executeUseCase(RequestCommand<AgregarJugador> agregarJugadorRequestCommand) {
 
@@ -16,7 +19,7 @@ public class AgregarJugadorUseCase extends UseCase<RequestCommand<AgregarJugador
 
         var juego = Juego.from(juegoId, retrieveEvents());
 
-        if(juego.jugadores().size() > 23){
+        if(juego.jugadores().size() > MAXIMO_JUGADORES_AÑADIR){
             throw new BusinessException(juegoId.value(), "No se puede realizar la operación pq ya se llegó al máximo de jugadores.");
         }
 

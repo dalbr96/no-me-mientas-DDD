@@ -4,7 +4,6 @@ import co.com.sofka.business.generic.UseCaseHandler;
 import co.com.sofka.business.repository.DomainEventRepository;
 import co.com.sofka.business.support.TriggeredEvent;
 import co.com.sofka.domain.generic.DomainEvent;
-import org.example.domain.juego.events.RondaIniciada;
 import org.example.domain.juego.values.Dinero;
 import org.example.domain.juego.values.JuegoId;
 import org.example.domain.juego.values.JugadorId;
@@ -19,13 +18,11 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -38,12 +35,10 @@ class DestaparDadosUseCaseTest {
     void destaparDadosUseCase(){
 
         var rondaId = RondaId.of("xxxx");
-
         var jugadores = Map.of(
                 JugadorId.of("xxx"), new Dinero(300),
                 JugadorId.of("yyy"), new Dinero(400)
         );
-
         var event = new EtapaCreada(jugadores);
         event.setAggregateRootId(rondaId.value());
 
@@ -102,12 +97,10 @@ class DestaparDadosUseCaseTest {
     void destaparDadosUseCase_TresEtapas(){
 
         var rondaId = RondaId.of("xxxx");
-
         var jugadores = Map.of(
                 JugadorId.of("xxx"), new Dinero(300),
                 JugadorId.of("yyy"), new Dinero(400)
         );
-
         var event = new EtapaCreada(jugadores);
         event.setAggregateRootId(rondaId.value());
 
@@ -134,7 +127,7 @@ class DestaparDadosUseCaseTest {
         var rondaId = RondaId.of("xxx");
         var juegoId = JuegoId.of("xxx-j");
 
-        var jugadores = Set.of(
+        var jugadores = List.of(
                 JugadorId.of("xxx-1"),
                 JugadorId.of("xxx-2")
         );
@@ -161,7 +154,6 @@ class DestaparDadosUseCaseTest {
 
         return eventosDeDominio;
     }
-
     private List<DomainEvent> domainEventList_TresEtapas() {
         var capitales = Map.of(
                 JugadorId.of("xxx-1"), new Dinero(400),
@@ -173,4 +165,5 @@ class DestaparDadosUseCaseTest {
 
         return eventosDeDominio;
     }
-}
+
+    }

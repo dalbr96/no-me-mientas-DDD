@@ -7,11 +7,7 @@ import org.example.domain.ronda.values.Dado;
 import org.example.domain.ronda.values.EtapaId;
 import org.example.domain.ronda.values.Puntaje;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.stream.Collector;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class RondaChange extends EventChange {
@@ -22,11 +18,9 @@ public class RondaChange extends EventChange {
             ronda.jugadoresRonda = event.getJugadoresRonda();
             ronda.capitalJugadores = event.getCapitalJugadores();
             ronda.puntajes = new HashMap<>();
-
             ronda.jugadoresRonda.forEach((jugadorId) -> {
                 ronda.puntajes.put(jugadorId, new Puntaje(0));
             });
-
             ronda.capitalAcumulado = new Dinero(0);
             ronda.dados = new ArrayList<>();
             ronda.etapas = new HashSet<>();
@@ -40,14 +34,14 @@ public class RondaChange extends EventChange {
         });
 
         apply((EtapaCreada event) ->{
-
             var capitales = event.getCapitales();
 
             Integer apuestaMaxima = capitales.values().stream()
                     .max(Comparator.comparing(Dinero::value)).get().value();
 
-            ronda.etapas.forEach(etapa -> etapa.cambiarActual());
+            ronda.etapas.forEach(Etapa::cambiarActual);
             ronda.etapas.add(new Etapa(new EtapaId(), new Dinero(apuestaMaxima)));
+            ronda.etapas.iterator().next().asignarOrden((new ArrayList<>(capitales.keySet())));
         });
 
         apply((DadosDestapados event) -> {
@@ -72,5 +66,10 @@ public class RondaChange extends EventChange {
             var dados = ronda.dados().stream().filter(dado -> dado.value().estaDestapado()).collect(Collectors.toList());
             ronda.etapas.iterator().next().agregarDados(dados);
         });
+
+        apply((TurnosAsignados event) -> {
+            Collections.shuffle(ronda.etapas.iterator().next().orden());
+        });
+
     }
 }

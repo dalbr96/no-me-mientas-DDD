@@ -9,6 +9,9 @@ import org.example.domain.ronda.command.CrearEtapa;
 
 public class CrearEtapaUseCase extends UseCase<RequestCommand<CrearEtapa>, ResponseEvents> {
 
+    public static final int MINIMO_JUGADORES = 2;
+    public static final int ETAPAS_MAXIMAS = 3;
+
     @Override
     public void executeUseCase(RequestCommand<CrearEtapa> crearEtapaRequestCommand) {
 
@@ -16,11 +19,11 @@ public class CrearEtapaUseCase extends UseCase<RequestCommand<CrearEtapa>, Respo
         var rondaId = command.getRondaId();
         var ronda = Ronda.from(rondaId, retrieveEvents());
 
-        if(ronda.jugadoresRonda().size() < 2){
+        if(ronda.jugadoresRonda().size() < MINIMO_JUGADORES){
             throw new BusinessException(rondaId.value(), "No se puede crear una Etapa con solo un jugador");
         }
 
-        if(ronda.etapas().size() >= 3){
+        if(ronda.etapas().size() >= ETAPAS_MAXIMAS){
             throw new BusinessException(rondaId.value(), "El Máximo numero de etapas es 3");
         }
 
