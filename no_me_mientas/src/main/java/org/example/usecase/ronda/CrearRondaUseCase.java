@@ -18,11 +18,13 @@ public class CrearRondaUseCase extends UseCase<TriggeredEvent<RondaIniciada>, Re
 
     @Override
     public void executeUseCase(TriggeredEvent<RondaIniciada> rondaIniciadaTriggeredEvent) {
+
         var event = rondaIniciadaTriggeredEvent.getDomainEvent();
         var rondaId = event.getRondaId();
         var juegoId = JuegoId.of(event.aggregateRootId());
-        List<JugadorId> jugadores = event.getJugadoresIds();
         var capitales = event.getCapitales();
+
+        List<JugadorId> jugadores = event.getJugadoresIds();
 
         if(event.getJugadoresIds().size() < MINIMO_JUGADORES){
             throw new BusinessException(rondaId.value(), "No se puede iniciar ronda por falta de jugadores");

@@ -49,9 +49,17 @@ public class Ronda extends AggregateEvent<RondaId> {
     }
 
     public void crearEtapa(){
+        Integer apuestaMaxima = this.capitalJugadores
+                .values()
+                .stream()
+                .max(Comparator.comparing(Dinero::value))
+                .get().value();
 
-        //TODO: FILTRAR JUGADORES ETAPAS!
-        appendChange(new EtapaCreada(capitalJugadores)).apply();
+        appendChange(new EtapaCreada(apuestaMaxima, jugadoresRonda)).apply();
+    }
+
+    public void asignarApuesta(JugadorId jugadorId, Apuesta apuesta){
+        appendChange(new ApuestaAsignada(jugadorId, apuesta)).apply();
     }
 
     public void destaparDados(){

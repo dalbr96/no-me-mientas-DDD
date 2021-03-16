@@ -34,14 +34,12 @@ public class RondaChange extends EventChange {
         });
 
         apply((EtapaCreada event) ->{
-            var capitales = event.getCapitales();
 
-            Integer apuestaMaxima = capitales.values().stream()
-                    .max(Comparator.comparing(Dinero::value)).get().value();
+            var apuestaMaxima = event.getApuestaMaxima();
+            var jugadoresEtapa = event.getJugadoresEtapa();
 
             ronda.etapas.forEach(Etapa::cambiarActual);
-            ronda.etapas.add(new Etapa(new EtapaId(), new Dinero(apuestaMaxima)));
-            ronda.etapas.iterator().next().asignarOrden((new ArrayList<>(capitales.keySet())));
+            ronda.etapas.add(new Etapa(new EtapaId(), new Dinero(apuestaMaxima), jugadoresEtapa));
         });
 
         apply((DadosDestapados event) -> {
@@ -68,7 +66,16 @@ public class RondaChange extends EventChange {
         });
 
         apply((TurnosAsignados event) -> {
-            Collections.shuffle(ronda.etapas.iterator().next().orden());
+            var ordenApuestas = ronda.etapas.iterator().next().orden();
+            Collections.shuffle(ordenApuestas);
+            ronda.etapas.iterator().next().asignarOrden(ordenApuestas);
+        });
+
+        apply((ApuestaAsignada event) -> {
+            var jugadorId = event.getJugadorId();
+            var apuesta = event.getApuesta();
+
+            ronda.etapas.iterator().next().asignarApuesta(jugadorId, apuesta);
         });
 
     }

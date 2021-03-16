@@ -24,10 +24,6 @@ public class JuegoChange extends EventChange {
                 throw new IllegalArgumentException("No puede agregar jugadores en un juego iniciado");
             }
 
-            if(juego.jugadores.size() > 23){
-                throw new BusinessException(juego.identity().value(), "El máximo numero de jugadores ha sido alcanzado");
-            }
-
             juego.jugadores.put(event.getJugadorId(),
                     new Jugador(
                             event.getJugadorId(),

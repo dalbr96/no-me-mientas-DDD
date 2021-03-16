@@ -4,17 +4,24 @@ import co.com.sofka.domain.generic.DomainEvent;
 import org.example.domain.juego.values.Dinero;
 import org.example.domain.juego.values.JugadorId;
 
+import java.util.List;
 import java.util.Map;
 
 public class EtapaCreada extends DomainEvent {
-    private final Map<JugadorId, Dinero> capitales;
+    private final Integer apuestaMaxima;
+    private final List<JugadorId> jugadoresEtapa;
 
-    public EtapaCreada(Map<JugadorId, Dinero> capitales) {
+    public EtapaCreada(Integer apuestaMaxima, List<JugadorId> jugadoresEtapa ) {
         super("nomemientas.EtapaCreada");
-        this.capitales = capitales;
+        this.apuestaMaxima = apuestaMaxima;
+        this.jugadoresEtapa = jugadoresEtapa;
     }
 
-    public Map<JugadorId, Dinero> getCapitales() {
-        return capitales;
+    public Integer getApuestaMaxima() {
+        return apuestaMaxima;
+    }
+
+    public List<JugadorId> getJugadoresEtapa() {
+        return jugadoresEtapa;
     }
 }

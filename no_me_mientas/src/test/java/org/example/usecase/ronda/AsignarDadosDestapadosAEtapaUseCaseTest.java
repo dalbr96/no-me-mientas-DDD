@@ -119,31 +119,31 @@ class AsignarDadosDestapadosAEtapaUseCaseTest {
         return List.of(
                 new RondaCreada(rondaId, juegoId, jugadores, capitales),
                 new DadoLanzado(),
-                new EtapaCreada(capitales)
+                new EtapaCreada(400, jugadores)
         );
     }
 
     private List<DomainEvent> eventList_DosEtapas() {
 
-        var capitalesSegundaEtapa = Map.of(
-                JugadorId.of("xxx-1"), new Dinero(500),
-                JugadorId.of("xxx-2"), new Dinero(200)
+        var jugadoresSegundaEtapa = List.of(
+                JugadorId.of("xxx-1"),
+                JugadorId.of("xxx-2")
         );
 
         var eventos_DosEtapas = new ArrayList<>(eventList());
-        eventos_DosEtapas.add(new EtapaCreada(capitalesSegundaEtapa));
+        eventos_DosEtapas.add(new EtapaCreada(500, jugadoresSegundaEtapa));
         return eventos_DosEtapas;
     }
 
     private List<DomainEvent> eventList_TresEtapas() {
 
-        var capitales = Map.of(
-                JugadorId.of("xxx-1"), new Dinero(400),
-                JugadorId.of("xxx-2"), new Dinero(300)
+        var jugadores = List.of(
+                JugadorId.of("xxx-1"),
+                JugadorId.of("xxx-2")
         );
 
         var eventos_TresEtapas = new ArrayList<>(eventList_DosEtapas());
-        eventos_TresEtapas.add(new EtapaCreada(capitales));
+        eventos_TresEtapas.add(new EtapaCreada(400, jugadores));
         return eventos_TresEtapas;
     }
 }

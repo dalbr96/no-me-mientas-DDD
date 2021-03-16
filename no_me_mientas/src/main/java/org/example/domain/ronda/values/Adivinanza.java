@@ -27,7 +27,17 @@ public class Adivinanza implements ValueObject<Adivinanza.Values> {
 
     @Override
     public Values value() {
-        return null;
+        return new Values() {
+            @Override
+            public Integer cara() {
+                return cara;
+            }
+
+            @Override
+            public Integer carasRepetidas() {
+                return numeroRepeticiones;
+            }
+        };
     }
 
     public interface Values {

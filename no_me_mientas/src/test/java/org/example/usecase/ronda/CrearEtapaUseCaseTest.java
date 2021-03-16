@@ -116,20 +116,12 @@ class CrearEtapaUseCaseTest {
 
     private List<DomainEvent> domainEvents_ErrorEsperado() {
 
-        var rondaId = RondaId.of("xxx");
-        var juegoId = JuegoId.of("xxx-j");
-
-        var capitales = Map.of(
-                JugadorId.of("xxx-1"), new Dinero(400),
-                JugadorId.of("xxx-2"), new Dinero(300)
-        );
-
         return List.of(
                 domainEvents().get(0),
-                new EtapaCreada(capitales),
-                new EtapaCreada(capitales),
-                new EtapaCreada(capitales)
-        );
+                new EtapaCreada(400, List.of(JugadorId.of("xxx-1"),JugadorId.of("xxx-2"))),
+                new EtapaCreada(400, List.of(JugadorId.of("xxx-1"),JugadorId.of("xxx-2"))),
+                new EtapaCreada(400, List.of(JugadorId.of("xxx-1"),JugadorId.of("xxx-2")))
+                );
     }
 
     private List<DomainEvent> domainEvents_FaltaJugadores() {

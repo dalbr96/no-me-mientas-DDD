@@ -18,6 +18,18 @@ public class Apuesta implements ValueObject<Apuesta.Values> {
 
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Apuesta apuesta = (Apuesta) o;
+        return Objects.equals(dineroApostado, apuesta.dineroApostado) && Objects.equals(adivinanza, apuesta.adivinanza);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(dineroApostado, adivinanza);
+    }
 
     @Override
     public Values value() {

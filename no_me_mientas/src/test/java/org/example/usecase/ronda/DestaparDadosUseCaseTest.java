@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import static org.mockito.Mockito.when;
 
@@ -35,11 +36,8 @@ class DestaparDadosUseCaseTest {
     void destaparDadosUseCase(){
 
         var rondaId = RondaId.of("xxxx");
-        var jugadores = Map.of(
-                JugadorId.of("xxx"), new Dinero(300),
-                JugadorId.of("yyy"), new Dinero(400)
-        );
-        var event = new EtapaCreada(jugadores);
+
+        var event = new EtapaCreada(400, List.of(JugadorId.of("xxx"), JugadorId.of("yyy")));
         event.setAggregateRootId(rondaId.value());
 
         var useCase = new DestaparDadosUseCase();
@@ -51,7 +49,7 @@ class DestaparDadosUseCaseTest {
                 .syncExecutor(useCase, new TriggeredEvent<>(event)).orElseThrow().getDomainEvents();
 
         List<DomainEvent> eventos = new ArrayList<>(domainEventList());
-        eventos.add(new EtapaCreada(jugadores));
+        eventos.add(new EtapaCreada(400, List.of(JugadorId.of("xxx"), JugadorId.of("yyy"))));
         eventos.add(events.get(0));
 
         var ronda = Ronda.from(rondaId, eventos);
@@ -66,12 +64,7 @@ class DestaparDadosUseCaseTest {
 
         var rondaId = RondaId.of("xxxx");
 
-        var jugadores = Map.of(
-                JugadorId.of("xxx"), new Dinero(300),
-                JugadorId.of("yyy"), new Dinero(400)
-        );
-
-        var event = new EtapaCreada(jugadores);
+        var event = new EtapaCreada(400, List.of(JugadorId.of("xxx"), JugadorId.of("yyy")));
         event.setAggregateRootId(rondaId.value());
 
         var useCase = new DestaparDadosUseCase();
@@ -83,7 +76,7 @@ class DestaparDadosUseCaseTest {
                 .syncExecutor(useCase, new TriggeredEvent<>(event)).orElseThrow().getDomainEvents();
 
         List<DomainEvent> eventos = new ArrayList<>(domainEventList_DosEtapas());
-        eventos.add(new EtapaCreada(jugadores));
+        eventos.add(new EtapaCreada(400, List.of(JugadorId.of("xxx"), JugadorId.of("yyy"))));
         eventos.add(events.get(0));
 
         var ronda = Ronda.from(rondaId, eventos);
@@ -97,11 +90,8 @@ class DestaparDadosUseCaseTest {
     void destaparDadosUseCase_TresEtapas(){
 
         var rondaId = RondaId.of("xxxx");
-        var jugadores = Map.of(
-                JugadorId.of("xxx"), new Dinero(300),
-                JugadorId.of("yyy"), new Dinero(400)
-        );
-        var event = new EtapaCreada(jugadores);
+
+        var event = new EtapaCreada(400, List.of(JugadorId.of("xxx"), JugadorId.of("yyy")));
         event.setAggregateRootId(rondaId.value());
 
         var useCase = new DestaparDadosUseCase();
@@ -113,7 +103,7 @@ class DestaparDadosUseCaseTest {
                 .syncExecutor(useCase, new TriggeredEvent<>(event)).orElseThrow().getDomainEvents();
 
         List<DomainEvent> eventos = new ArrayList<>(domainEventList_TresEtapas());
-        eventos.add(new EtapaCreada(jugadores));
+        eventos.add(new EtapaCreada(400, List.of(JugadorId.of("xxx"), JugadorId.of("yyy"))));
         eventos.add(events.get(0));
 
         var ronda = Ronda.from(rondaId, eventos);
@@ -144,24 +134,15 @@ class DestaparDadosUseCaseTest {
     }
     private List<DomainEvent> domainEventList_DosEtapas() {
 
-        var capitales = Map.of(
-                JugadorId.of("xxx-1"), new Dinero(400),
-                JugadorId.of("xxx-2"), new Dinero(300)
-        );
-
         var eventosDeDominio = new ArrayList<>(domainEventList());
-        eventosDeDominio.add(new EtapaCreada(capitales));
+        eventosDeDominio.add(new EtapaCreada(400, List.of(JugadorId.of("xxx-1"),JugadorId.of("xxx-2"))));
 
         return eventosDeDominio;
     }
     private List<DomainEvent> domainEventList_TresEtapas() {
-        var capitales = Map.of(
-                JugadorId.of("xxx-1"), new Dinero(400),
-                JugadorId.of("xxx-2"), new Dinero(300)
-        );
 
         var eventosDeDominio = new ArrayList<>(domainEventList_DosEtapas());
-        eventosDeDominio.add(new EtapaCreada(capitales));
+        eventosDeDominio.add(new EtapaCreada(400, List.of(JugadorId.of("xxx-1"), JugadorId.of("xxx-2"))));
 
         return eventosDeDominio;
     }

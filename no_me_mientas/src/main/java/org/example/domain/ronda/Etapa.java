@@ -21,13 +21,13 @@ public class Etapa extends Entity<EtapaId> {
     private Boolean esActual;
 
 
-    public Etapa(EtapaId entityId, Dinero apuestaMaxima){
+    public Etapa(EtapaId entityId, Dinero apuestaMaxima, List<JugadorId> jugadoresEtapa){
         super(entityId);
         this.apuestaMaxima = apuestaMaxima;
         this.turnos = new HashMap<>();
         this.esActual = Boolean.TRUE;
         this.dadosDestapados = new ArrayList<>();
-        this.ordenTurnos = new ArrayList<>();
+        this.ordenTurnos = new ArrayList<>(jugadoresEtapa);
     }
 
     public void agregarDados(List<Dado> dados){
@@ -39,6 +39,10 @@ public class Etapa extends Entity<EtapaId> {
     }
 
     public void asignarOrden(List<JugadorId> ordenTurnos){this.ordenTurnos = ordenTurnos;}
+
+    public void asignarApuesta(JugadorId jugadorId, Apuesta apuesta){
+        turnos.put(jugadorId, apuesta);
+    }
 
     public List<JugadorId> orden() {
         return ordenTurnos;
