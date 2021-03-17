@@ -8,6 +8,7 @@ import co.com.sofka.domain.generic.DomainEvent;
 import org.example.domain.juego.values.Dinero;
 import org.example.domain.juego.values.JuegoId;
 import org.example.domain.juego.values.JugadorId;
+import org.example.domain.ronda.Etapa;
 import org.example.domain.ronda.Ronda;
 import org.example.domain.ronda.command.CrearEtapa;
 import org.example.domain.ronda.events.EtapaCreada;
@@ -50,12 +51,61 @@ class CrearEtapaUseCaseTest {
         eventosRondaReconstruida.add(events.get(0));
 
         var rondaReconstruida = Ronda.from(rondaId, eventosRondaReconstruida);
-        var etapa =         rondaReconstruida.etapas().iterator().next();
+        var etapa = rondaReconstruida.etapas().stream().filter(Etapa::esActual).findFirst().get();
 
         Assertions.assertEquals(1, rondaReconstruida.etapas().size());
         Assertions.assertEquals(400, etapa.apuestaMaxima().value());
         Assertions.assertEquals(Boolean.TRUE, etapa.esActual());
+    }
 
+    @Test
+    void crearSegundaEtapa(){
+        var rondaId = RondaId.of("xxxx");
+        var command = new CrearEtapa(rondaId);
+        var useCase = new CrearEtapaUseCase();
+
+        when(repository.getEventsBy(rondaId.value())).thenReturn(domainEvents_segundaEtapa());
+        useCase.addRepository(repository);
+
+        var events = UseCaseHandler.getInstance().setIdentifyExecutor(rondaId.value())
+                .syncExecutor(useCase, new RequestCommand<>(command)).orElseThrow().getDomainEvents();
+
+        List<DomainEvent> eventosRondaReconstruida = new ArrayList<DomainEvent>(domainEvents_segundaEtapa());
+
+        eventosRondaReconstruida.add(events.get(0));
+
+        var rondaReconstruida = Ronda.from(rondaId, eventosRondaReconstruida);
+        var etapa = rondaReconstruida.etapas().stream().filter(Etapa::esActual).findFirst().get();
+
+
+        Assertions.assertEquals(2, rondaReconstruida.etapas().size());
+        Assertions.assertEquals(400, etapa.apuestaMaxima().value());
+        Assertions.assertEquals(Boolean.TRUE, etapa.esActual());
+    }
+
+    @Test
+    void crearTerceraEtapa(){
+        var rondaId = RondaId.of("xxxx");
+        var command = new CrearEtapa(rondaId);
+        var useCase = new CrearEtapaUseCase();
+
+        when(repository.getEventsBy(rondaId.value())).thenReturn(domainEvents_terceraEtapa());
+        useCase.addRepository(repository);
+
+        var events = UseCaseHandler.getInstance().setIdentifyExecutor(rondaId.value())
+                .syncExecutor(useCase, new RequestCommand<>(command)).orElseThrow().getDomainEvents();
+
+        List<DomainEvent> eventosRondaReconstruida = new ArrayList<DomainEvent>(domainEvents_terceraEtapa());
+
+        eventosRondaReconstruida.add(events.get(0));
+
+        var rondaReconstruida = Ronda.from(rondaId, eventosRondaReconstruida);
+        var etapa =         rondaReconstruida.etapas().stream().filter(Etapa::esActual).findFirst().get();
+
+
+        Assertions.assertEquals(3, rondaReconstruida.etapas().size());
+        Assertions.assertEquals(400, etapa.apuestaMaxima().value());
+        Assertions.assertEquals(Boolean.TRUE, etapa.esActual());
     }
 
     @Test
@@ -112,6 +162,21 @@ class CrearEtapaUseCaseTest {
         return List.of(
                 new RondaCreada(rondaId, juegoId, jugadores, capitales)
         );
+    }
+
+    private List<DomainEvent> domainEvents_segundaEtapa(){
+        return List.of(
+                domainEvents().get(0),
+                new EtapaCreada(500, List.of(JugadorId.of("xxx-1"),JugadorId.of("xxx-2")))
+        );
+    }
+
+    private List<DomainEvent> domainEvents_terceraEtapa(){
+        var domainEvents = new ArrayList<>(domainEvents_segundaEtapa());
+        domainEvents.add(
+                new EtapaCreada(200, List.of(JugadorId.of("xxx-1"),JugadorId.of("xxx-2")))
+        );
+        return domainEvents;
     }
 
     private List<DomainEvent> domainEvents_ErrorEsperado() {

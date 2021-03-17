@@ -8,8 +8,10 @@ import co.com.sofka.domain.generic.DomainEvent;
 import org.example.domain.juego.values.Dinero;
 import org.example.domain.juego.values.JuegoId;
 import org.example.domain.juego.values.JugadorId;
+import org.example.domain.ronda.Etapa;
 import org.example.domain.ronda.Ronda;
 import org.example.domain.ronda.command.AsignarApuesta;
+import org.example.domain.ronda.events.ApuestaAsignada;
 import org.example.domain.ronda.events.DadoLanzado;
 import org.example.domain.ronda.events.EtapaCreada;
 import org.example.domain.ronda.events.RondaCreada;
@@ -57,7 +59,7 @@ class AsignarApuestaUseCaseTest {
 
         Ronda rondaConApuesta = Ronda.from(rondaId, domainEvents);
 
-        var apuestaRealizada = rondaConApuesta.etapas().iterator().next().turnos().get(jugadorId);
+        var apuestaRealizada = rondaConApuesta.etapas().stream().filter(Etapa::esActual).findFirst().get().turnos().get(jugadorId);
         var dineroApostado = apuestaRealizada.value().dineroApostado();
         var adivinanzaRealizada = apuestaRealizada.value().adivinanzaRealizada();
 
@@ -77,6 +79,63 @@ class AsignarApuestaUseCaseTest {
         var useCase = new AsignarApuestaUseCase();
 
         when(repository.getEventsBy(rondaId.value())).thenReturn(domainList());
+        useCase.addRepository(repository);
+
+        Assertions.assertThrows(BusinessException.class, () ->{
+            UseCaseHandler.getInstance().setIdentifyExecutor(rondaId.value())
+                    .syncExecutor(useCase, new RequestCommand<>(command)).orElseThrow().getDomainEvents();
+        });
+
+    }
+
+    @Test
+    void asignarApuesta_ErrorApuestaMaxima(){
+
+        JugadorId jugadorId = JugadorId.of("xxx");
+        Apuesta apuesta = new Apuesta(new Dinero(1000), new Adivinanza(3, 3));
+        RondaId rondaId = RondaId.of("ppp");
+        var command = new AsignarApuesta(rondaId, jugadorId, apuesta);
+        var useCase = new AsignarApuestaUseCase();
+
+        when(repository.getEventsBy(rondaId.value())).thenReturn(domainList());
+        useCase.addRepository(repository);
+
+        Assertions.assertThrows(BusinessException.class, () ->{
+            UseCaseHandler.getInstance().setIdentifyExecutor(rondaId.value())
+                    .syncExecutor(useCase, new RequestCommand<>(command)).orElseThrow().getDomainEvents();
+        });
+
+    }
+
+    @Test
+    void asignarApuesta_ErrorFondosJugador(){
+
+        JugadorId jugadorId = JugadorId.of("xxx");
+        Apuesta apuesta = new Apuesta(new Dinero(600), new Adivinanza(3, 3));
+        RondaId rondaId = RondaId.of("ppp");
+        var command = new AsignarApuesta(rondaId, jugadorId, apuesta);
+        var useCase = new AsignarApuestaUseCase();
+
+        when(repository.getEventsBy(rondaId.value())).thenReturn(domainList());
+        useCase.addRepository(repository);
+
+        Assertions.assertThrows(BusinessException.class, () ->{
+            UseCaseHandler.getInstance().setIdentifyExecutor(rondaId.value())
+                    .syncExecutor(useCase, new RequestCommand<>(command)).orElseThrow().getDomainEvents();
+        });
+
+    }
+
+    @Test
+    void asignarApuesta_ErrorApuestaRepetida(){
+
+        JugadorId jugadorId = JugadorId.of("aaa");
+        Apuesta apuesta = new Apuesta(new Dinero(100), new Adivinanza(5, 3));
+        RondaId rondaId = RondaId.of("ppp");
+        var command = new AsignarApuesta(rondaId, jugadorId, apuesta);
+        var useCase = new AsignarApuestaUseCase();
+
+        when(repository.getEventsBy(rondaId.value())).thenReturn(domainEvents_ErrorApuestaRepetida());
         useCase.addRepository(repository);
 
         Assertions.assertThrows(BusinessException.class, () ->{
@@ -112,4 +171,17 @@ class AsignarApuestaUseCaseTest {
                 new EtapaCreada(900, jugadores)
         );
     }
+
+    private List<DomainEvent> domainEvents_ErrorApuestaRepetida(){
+        var events = new ArrayList<>(domainList());
+        events.add(new ApuestaAsignada(JugadorId.of("xxx"),
+                new Apuesta(new Dinero(200), new Adivinanza(3, 3))));
+        events.add(new ApuestaAsignada(JugadorId.of("yyy"),
+                new Apuesta(new Dinero(200), new Adivinanza(4, 3))));
+        events.add(new ApuestaAsignada(JugadorId.of("zzz"),
+                new Apuesta(new Dinero(200), new Adivinanza(5, 3))));
+
+        return events;
+    }
+
 }

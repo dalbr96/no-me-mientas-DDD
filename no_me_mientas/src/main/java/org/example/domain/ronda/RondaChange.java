@@ -62,20 +62,27 @@ public class RondaChange extends EventChange {
 
         apply((DadosAsignadosAEtapa event) -> {
             var dados = ronda.dados().stream().filter(dado -> dado.value().estaDestapado()).collect(Collectors.toList());
-            ronda.etapas.iterator().next().agregarDados(dados);
+            ronda.etapas.stream().filter(Etapa::esActual).findAny().get().agregarDados(dados);
         });
 
         apply((TurnosAsignados event) -> {
             var ordenApuestas = ronda.etapas.iterator().next().orden();
             Collections.shuffle(ordenApuestas);
-            ronda.etapas.iterator().next().asignarOrden(ordenApuestas);
+            ronda.etapas.stream().filter(Etapa::esActual).findFirst().get().asignarOrden(ordenApuestas);
         });
 
         apply((ApuestaAsignada event) -> {
             var jugadorId = event.getJugadorId();
             var apuesta = event.getApuesta();
 
-            ronda.etapas.iterator().next().asignarApuesta(jugadorId, apuesta);
+            ronda.etapas.stream().filter(Etapa::esActual).findFirst().get().asignarApuesta(jugadorId, apuesta);
+        });
+
+        apply((JugadorEliminado event) -> {
+            var jugadorId = event.getJugadorId();
+            var jugadores = new ArrayList<>(ronda.jugadoresRonda());
+            jugadores.remove(jugadorId);
+            ronda.jugadoresRonda = jugadores;
         });
 
     }

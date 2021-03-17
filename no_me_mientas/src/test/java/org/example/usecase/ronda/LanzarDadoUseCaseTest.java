@@ -4,6 +4,7 @@ package org.example.usecase.ronda;
 import co.com.sofka.business.generic.UseCaseHandler;
 import co.com.sofka.business.repository.DomainEventRepository;
 import co.com.sofka.business.support.RequestCommand;
+import co.com.sofka.business.support.TriggeredEvent;
 import co.com.sofka.domain.generic.DomainEvent;
 import org.example.domain.juego.values.Dinero;
 import org.example.domain.juego.values.JuegoId;
@@ -31,7 +32,20 @@ class LanzarDadoUseCaseTest {
     @Test
     void lanzarDadosTest(){
         var rondaId = RondaId.of("xxx");
-        var command = new LanzarDados(rondaId);
+        var juegoId = JuegoId.of("xxx-j");
+
+        var jugadores = List.of(
+                JugadorId.of("xxx-1"),
+                JugadorId.of("xxx-2")
+        );
+
+        var capitales = Map.of(
+                JugadorId.of("xxx-1"), new Dinero(400),
+                JugadorId.of("xxx-2"), new Dinero(300)
+        );
+
+        var evento = new RondaCreada(rondaId, juegoId, jugadores, capitales);
+
         var useCase = new LanzarDadoUseCase();
 
         when(repository.getEventsBy(rondaId.value())).thenReturn(domainEvents());
@@ -39,7 +53,7 @@ class LanzarDadoUseCaseTest {
         useCase.addRepository(repository);
 
         var events = UseCaseHandler.getInstance().setIdentifyExecutor(rondaId.value())
-                .syncExecutor(useCase, new RequestCommand<>(command)).orElseThrow().getDomainEvents();
+                .syncExecutor(useCase, new TriggeredEvent<>(evento)).orElseThrow().getDomainEvents();
 
         List<DomainEvent> eventList = new ArrayList<>(domainEvents());
         eventList.add(events.get(0));

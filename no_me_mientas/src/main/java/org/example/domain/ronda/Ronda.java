@@ -74,8 +74,16 @@ public class Ronda extends AggregateEvent<RondaId> {
         appendChange(new TurnosAsignados()).apply();
     }
 
+    public void eliminarJugador(JugadorId jugadorId){
+        appendChange(new JugadorEliminado(jugadorId)).apply();
+    }
+
     public List<JugadorId> jugadoresRonda() {
         return jugadoresRonda;
+    }
+
+    public Map<JugadorId, Dinero> capitales() {
+        return capitalJugadores;
     }
 
     public Map<JugadorId, Puntaje> puntajes() {

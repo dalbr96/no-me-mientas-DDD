@@ -26,6 +26,7 @@ public class CrearJuegoUseCase extends UseCase<RequestCommand<CrearJuego>, Respo
         );
 
         var juego = new Juego(juegoId, factory);
+
         var commits = juego.getUncommittedChanges();
 
         emit().onResponse(new ResponseEvents(commits));

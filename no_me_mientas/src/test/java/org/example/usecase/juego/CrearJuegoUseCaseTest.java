@@ -8,7 +8,6 @@ import org.example.domain.juego.events.JuegoCreado;
 import org.example.domain.juego.values.Dinero;
 import org.example.domain.juego.values.JugadorId;
 import org.example.domain.juego.values.Name;
-import org.example.usecase.juego.CrearJuegoUseCase;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

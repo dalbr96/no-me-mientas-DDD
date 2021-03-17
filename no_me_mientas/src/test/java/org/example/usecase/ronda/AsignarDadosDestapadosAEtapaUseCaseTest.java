@@ -7,6 +7,7 @@ import co.com.sofka.domain.generic.DomainEvent;
 import org.example.domain.juego.values.Dinero;
 import org.example.domain.juego.values.JuegoId;
 import org.example.domain.juego.values.JugadorId;
+import org.example.domain.ronda.Etapa;
 import org.example.domain.ronda.Ronda;
 import org.example.domain.ronda.events.DadoLanzado;
 import org.example.domain.ronda.events.DadosDestapados;
@@ -52,7 +53,7 @@ class AsignarDadosDestapadosAEtapaUseCaseTest {
 
         var ronda = Ronda.from(rondaId, listaEventos);
 
-        Assertions.assertEquals(3, ronda.etapas().iterator().next().dadosDestapados().size());
+        Assertions.assertEquals(3, ronda.etapas().stream().filter(Etapa::esActual).findFirst().get().dadosDestapados().size());
     }
 
     @Test
@@ -75,7 +76,7 @@ class AsignarDadosDestapadosAEtapaUseCaseTest {
 
         var ronda = Ronda.from(rondaId, listaEventos);
 
-        Assertions.assertEquals(5, ronda.etapas().iterator().next().dadosDestapados().size());
+        Assertions.assertEquals(5, ronda.etapas().stream().filter(Etapa::esActual).findFirst().get().dadosDestapados().size());
     }
 
     @Test
@@ -98,7 +99,7 @@ class AsignarDadosDestapadosAEtapaUseCaseTest {
 
         var ronda = Ronda.from(rondaId, listaEventos);
 
-        Assertions.assertEquals(6, ronda.etapas().iterator().next().dadosDestapados().size());
+        Assertions.assertEquals(6, ronda.etapas().stream().filter(Etapa::esActual).findFirst().get().dadosDestapados().size());
     }
 
     private List<DomainEvent> eventList() {
@@ -143,7 +144,7 @@ class AsignarDadosDestapadosAEtapaUseCaseTest {
         );
 
         var eventos_TresEtapas = new ArrayList<>(eventList_DosEtapas());
-        eventos_TresEtapas.add(new EtapaCreada(400, jugadores));
+        eventos_TresEtapas.add(new EtapaCreada(300, jugadores));
         return eventos_TresEtapas;
     }
 }

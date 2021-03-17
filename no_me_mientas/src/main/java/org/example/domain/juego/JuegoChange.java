@@ -12,7 +12,7 @@ public class JuegoChange extends EventChange {
 
     public JuegoChange(Juego juego){
 
-        apply((JuegoCreado event) ->{
+        apply((JuegoCreado event) -> {
             juego.jugadores = new HashMap<>();
             juego.juegoIniciado = Boolean.FALSE;
             juego.hayGanador = Boolean.FALSE;

@@ -26,6 +26,19 @@ public class Adivinanza implements ValueObject<Adivinanza.Values> {
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Adivinanza that = (Adivinanza) o;
+        return Objects.equals(cara, that.cara) && Objects.equals(numeroRepeticiones, that.numeroRepeticiones);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(cara, numeroRepeticiones);
+    }
+
+    @Override
     public Values value() {
         return new Values() {
             @Override

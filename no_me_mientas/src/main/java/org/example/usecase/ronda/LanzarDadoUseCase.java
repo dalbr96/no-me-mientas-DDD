@@ -1,20 +1,20 @@
 package org.example.usecase.ronda;
 
 import co.com.sofka.business.generic.UseCase;
-import co.com.sofka.business.support.RequestCommand;
 import co.com.sofka.business.support.ResponseEvents;
+import co.com.sofka.business.support.TriggeredEvent;
 import org.example.domain.ronda.Ronda;
-import org.example.domain.ronda.command.LanzarDados;
+import org.example.domain.ronda.events.RondaCreada;
 
 
-public class LanzarDadoUseCase extends UseCase<RequestCommand<LanzarDados>, ResponseEvents> {
+public class LanzarDadoUseCase extends UseCase<TriggeredEvent<RondaCreada>, ResponseEvents> {
 
     @Override
-    public void executeUseCase(RequestCommand<LanzarDados> lanzarDadosRequestCommand) {
+    public void executeUseCase(TriggeredEvent<RondaCreada> lanzarDadosRequestCommand) {
 
-        var command = lanzarDadosRequestCommand.getCommand();
+        var event = lanzarDadosRequestCommand.getDomainEvent();
 
-        var ronda = Ronda.from(command.getRondaId(), retrieveEvents());
+        var ronda = Ronda.from(event.getRondaId(), retrieveEvents());
 
         ronda.lanzarDados();
 
