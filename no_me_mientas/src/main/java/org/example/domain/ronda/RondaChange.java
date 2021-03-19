@@ -8,6 +8,7 @@ import org.example.domain.ronda.values.EtapaId;
 import org.example.domain.ronda.values.Puntaje;
 
 import java.util.*;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 public class RondaChange extends EventChange {
@@ -27,56 +28,17 @@ public class RondaChange extends EventChange {
             ronda.juegoId = event.getJuegoId();
         });
 
-        apply((DadoLanzado event) ->{
-            for(int i = 0; i < 6; i++){
-                ronda.dados.add(new Dado());
-            }
-        });
+        apply(dadoslanzados(ronda));
 
-        apply((EtapaCreada event) ->{
+        apply(etapaCreada(ronda));
 
-            var apuestaMaxima = event.getApuestaMaxima();
-            var jugadoresEtapa = event.getJugadoresEtapa();
+        apply(dadosDestapados(ronda));
 
-            ronda.etapas.forEach(Etapa::cambiarActual);
-            ronda.etapas.add(new Etapa(new EtapaId(), new Dinero(apuestaMaxima), jugadoresEtapa));
-        });
+        apply(dadosAsignadosAEtapa(ronda));
 
-        apply((DadosDestapados event) -> {
-            if(ronda.etapas.size() == 1){
-                for(int i = 0; i < 3; i++){
-                    ronda.dados().set(i, ronda.dados().get(i).destaparCara()) ;
-                }
-            }
-            if(ronda.etapas.size() == 2){
-                for(int i = 0; i < 5; i++){
-                    ronda.dados().set(i, ronda.dados().get(i).destaparCara()) ;
-                }
-            }
-            if(ronda.etapas.size() == 3){
-                for(int i = 0; i <= 5; i++){
-                    ronda.dados().set(i, ronda.dados().get(i).destaparCara()) ;
-                }
-            }
-        });
+        apply(turnosAsignados(ronda));
 
-        apply((DadosAsignadosAEtapa event) -> {
-            var dados = ronda.dados().stream().filter(dado -> dado.value().estaDestapado()).collect(Collectors.toList());
-            ronda.etapas.stream().filter(Etapa::esActual).findAny().get().agregarDados(dados);
-        });
-
-        apply((TurnosAsignados event) -> {
-            var ordenApuestas = ronda.etapas.iterator().next().orden();
-            Collections.shuffle(ordenApuestas);
-            ronda.etapas.stream().filter(Etapa::esActual).findFirst().get().asignarOrden(ordenApuestas);
-        });
-
-        apply((ApuestaAsignada event) -> {
-            var jugadorId = event.getJugadorId();
-            var apuesta = event.getApuesta();
-
-            ronda.etapas.stream().filter(Etapa::esActual).findFirst().get().asignarApuesta(jugadorId, apuesta);
-        });
+        apply(apuestaDeJugadorAsignada(ronda));
 
         apply((JugadorEliminado event) -> {
             var jugadorId = event.getJugadorId();
@@ -85,5 +47,72 @@ public class RondaChange extends EventChange {
             ronda.jugadoresRonda = jugadores;
         });
 
+    }
+
+    private Consumer<ApuestaAsignada> apuestaDeJugadorAsignada(Ronda ronda) {
+        return (ApuestaAsignada event) -> {
+            var jugadorId = event.getJugadorId();
+            var apuesta = event.getApuesta();
+
+            ronda.etapas.stream().filter(Etapa::esActual).findFirst().get().asignarApuesta(jugadorId, apuesta);
+        };
+    }
+
+    private Consumer<TurnosAsignados> turnosAsignados(Ronda ronda) {
+        return (TurnosAsignados event) -> {
+            var ordenApuestas = ronda.etapas.iterator().next().orden();
+            Collections.shuffle(ordenApuestas);
+            ronda.etapas.stream().filter(Etapa::esActual).findFirst().get().asignarOrden(ordenApuestas);
+        };
+    }
+
+    private Consumer<DadosAsignadosAEtapa> dadosAsignadosAEtapa(Ronda ronda) {
+        return (DadosAsignadosAEtapa event) -> {
+            var dados = ronda.dados().stream().filter(dado -> dado.value().estaDestapado()).collect(Collectors.toList());
+            ronda.etapas.stream().filter(Etapa::esActual).findAny().get().agregarDados(dados);
+        };
+    }
+
+    private Consumer<DadosDestapados> dadosDestapados(Ronda ronda) {
+        return (DadosDestapados event) -> {
+            if (isEtapa(ronda, 1)) {
+                for (int i = 0; i < 3; i++) {
+                    ronda.dados.set(i, ronda.dados.get(i).destaparCara());
+                }
+            }
+            if (isEtapa(ronda, 2)) {
+                for (int i = 0; i < 5; i++) {
+                    ronda.dados.set(i, ronda.dados.get(i).destaparCara());
+                }
+            }
+            if (isEtapa(ronda, 3)) {
+                for (int i = 0; i <= 5; i++) {
+                    ronda.dados.set(i, ronda.dados.get(i).destaparCara());
+                }
+            }
+        };
+    }
+
+    private boolean isEtapa(Ronda ronda, int numeroEtapa) {
+        return ronda.etapas.size() == numeroEtapa;
+    }
+
+    private Consumer<EtapaCreada> etapaCreada(Ronda ronda) {
+        return (EtapaCreada event) -> {
+
+            var apuestaMaxima = event.getApuestaMaxima();
+            var jugadoresEtapa = event.getJugadoresEtapa();
+
+            ronda.etapas.forEach(Etapa::cambiarActual);
+            ronda.etapas.add(new Etapa(new EtapaId(), new Dinero(apuestaMaxima), jugadoresEtapa));
+        };
+    }
+
+    private Consumer<DadoLanzado> dadoslanzados(Ronda ronda) {
+        return (DadoLanzado event) -> {
+            for (int i = 0; i < 6; i++) {
+                ronda.dados.add(new Dado());
+            }
+        };
     }
 }
