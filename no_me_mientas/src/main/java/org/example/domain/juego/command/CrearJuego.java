@@ -12,10 +12,12 @@ public class CrearJuego implements Command {
 
     private final Map<JugadorId, Name> nombres;
     private final Map <JugadorId, Dinero> capitales;
+    private final JuegoId juegoId;
 
-    public CrearJuego(Map<JugadorId, Name> nombres, Map<JugadorId, Dinero> capitales) {
+    public CrearJuego(Map<JugadorId, Name> nombres, Map<JugadorId, Dinero> capitales, JuegoId juegoId) {
         this.nombres = nombres;
         this.capitales = capitales;
+        this.juegoId = juegoId;
 
     }
 
@@ -27,4 +29,7 @@ public class CrearJuego implements Command {
         return capitales;
     }
 
+    public JuegoId getJuegoId() {
+        return juegoId;
+    }
 }

@@ -19,8 +19,8 @@ public class Adivinanza implements ValueObject<Adivinanza.Values> {
 
         this.numeroRepeticiones = Objects.requireNonNull(numeroRepeticiones, "Debe proveer el numero de repeticiones");
 
-        if(numeroRepeticiones < 3){
-            throw new IllegalArgumentException("El numero de repeticiones debe ser de al menos 3");
+        if(numeroRepeticiones < 3 && numeroRepeticiones > 7){
+            throw new IllegalArgumentException("El numero de repeticiones debe ser de al menos 3 y no puede ser mayor a 6");
         }
 
     }

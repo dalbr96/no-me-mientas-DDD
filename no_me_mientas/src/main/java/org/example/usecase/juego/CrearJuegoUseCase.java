@@ -15,7 +15,6 @@ public class CrearJuegoUseCase extends UseCase<RequestCommand<CrearJuego>, Respo
     public void executeUseCase(RequestCommand<CrearJuego> crearJuegoRequestCommand) {
 
         var command = crearJuegoRequestCommand.getCommand();
-        var juegoId = new JuegoId();
 
         var factory = JugadorFactory.builder();
 
@@ -25,7 +24,7 @@ public class CrearJuegoUseCase extends UseCase<RequestCommand<CrearJuego>, Respo
                         command.getCapitales().get(jugadorId))
         );
 
-        var juego = new Juego(juegoId, factory);
+        var juego = new Juego(command.getJuegoId(), factory);
 
         var commits = juego.getUncommittedChanges();
 

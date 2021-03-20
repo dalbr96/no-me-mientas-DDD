@@ -6,6 +6,7 @@ import org.example.domain.juego.Juego;
 import org.example.domain.juego.command.CrearJuego;
 import org.example.domain.juego.events.JuegoCreado;
 import org.example.domain.juego.values.Dinero;
+import org.example.domain.juego.values.JuegoId;
 import org.example.domain.juego.values.JugadorId;
 import org.example.domain.juego.values.Name;
 import org.junit.jupiter.api.Assertions;
@@ -30,7 +31,7 @@ class CrearJuegoUseCaseTest {
         );
 
 
-        var command = new CrearJuego(nombres, capitales);
+        var command = new CrearJuego(nombres, capitales, new JuegoId());
         var crearJuegoUseCase = new CrearJuegoUseCase();
 
         var events = UseCaseHandler

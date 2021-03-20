@@ -42,8 +42,7 @@ public class AsignarApuestaUseCase extends UseCase<RequestCommand<AsignarApuesta
             if(entry.getValue().value().adivinanzaRealizada().equals(apuesta.value().adivinanzaRealizada())){
                 throw new BusinessException(rondaId.value(),
                         "No se puede asignar la apuesta porque alguien ya escogió esa adivinanza");
-            }
-        });
+            }});
     }
 
     private void verificarFondosJugador(RondaId rondaId, JugadorId jugadorId, Apuesta apuesta, Ronda ronda) {
