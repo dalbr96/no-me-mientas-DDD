@@ -41,7 +41,6 @@ public class Ronda extends AggregateEvent<RondaId> {
         return ronda;
     }
 
-
     public void lanzarDados(){
         for(int i = 0; i < 6; i++){
             appendChange(new DadoLanzado()).apply();

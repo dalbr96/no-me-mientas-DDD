@@ -5,7 +5,7 @@ import co.com.sofka.domain.generic.DomainEvent;
 public class DadosDestapados extends DomainEvent {
 
     public DadosDestapados() {
-        super("nomemientas.DadosDestapados");
+        super("nomemientas.ronda.DadosDestapados");
     }
 
 }

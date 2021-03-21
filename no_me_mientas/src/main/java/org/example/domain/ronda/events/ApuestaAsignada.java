@@ -9,7 +9,7 @@ public class ApuestaAsignada extends DomainEvent {
     private final  Apuesta apuesta;
 
     public ApuestaAsignada(JugadorId jugadorId, Apuesta apuesta) {
-        super("nomemientas.ApuestaAsignada");
+        super("nomemientas.ronda.ApuestaAsignada");
         this.jugadorId = jugadorId;
         this.apuesta = apuesta;
     }

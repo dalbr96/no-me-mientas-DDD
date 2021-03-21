@@ -6,7 +6,6 @@ import co.com.sofka.infraestructure.asyn.SubscriberEvent;
 import co.com.sofka.infraestructure.bus.EventBus;
 import co.com.sofka.infraestructure.repository.EventStoreRepository;
 import com.mongodb.ConnectionString;
-import jdk.jfr.Category;
 import org.example.infra.repo.MongoEventStoreRepository;
 import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;

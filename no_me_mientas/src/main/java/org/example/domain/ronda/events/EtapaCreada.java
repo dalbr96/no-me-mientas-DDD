@@ -12,7 +12,7 @@ public class EtapaCreada extends DomainEvent {
     private final List<JugadorId> jugadoresEtapa;
 
     public EtapaCreada(Integer apuestaMaxima, List<JugadorId> jugadoresEtapa ) {
-        super("nomemientas.EtapaCreada");
+        super("nomemientas.ronda.EtapaCreada");
         this.apuestaMaxima = apuestaMaxima;
         this.jugadoresEtapa = jugadoresEtapa;
     }

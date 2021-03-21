@@ -12,12 +12,14 @@ import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitAdmin;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
 
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+@Service
 public class RabbitMQEventBus implements EventBus {
     private static final String EXCHANGE = "no_me_mientas";
     private static final String TOPIC_BUSINESS_ERROR = "org.example.no_me_mientas.business.error";

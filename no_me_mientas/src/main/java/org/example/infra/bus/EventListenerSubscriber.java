@@ -6,11 +6,13 @@ import co.com.sofka.domain.generic.DomainEvent;
 import co.com.sofka.infraestructure.event.EventSerializer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.stereotype.Component;
 
 import java.util.concurrent.Flow;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+@Component
 public class EventListenerSubscriber implements Flow.Subscriber<DomainEvent> {
 
     private static final Logger LOGGER = Logger.getLogger(EventListenerSubscriber.class.getName());

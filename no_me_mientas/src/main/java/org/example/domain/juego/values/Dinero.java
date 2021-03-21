@@ -7,6 +7,7 @@ import java.util.Objects;
 public class Dinero implements ValueObject<Integer> {
 
     private Integer dinero;
+    private String id;
 
     public Dinero(Integer dinero){
 

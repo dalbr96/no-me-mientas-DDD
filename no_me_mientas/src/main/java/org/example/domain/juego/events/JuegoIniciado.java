@@ -8,7 +8,7 @@ import java.util.Set;
 public class JuegoIniciado extends DomainEvent {
 
     public JuegoIniciado(){
-        super("nomemientas.JuegoIniciado");
+        super("nomemientas.juego.JuegoIniciado");
 
     }
 

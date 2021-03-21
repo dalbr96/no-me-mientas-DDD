@@ -8,7 +8,7 @@ public class JugadorEliminado extends DomainEvent {
     private final JugadorId jugadorId;
 
     public JugadorEliminado(JugadorId jugadorId) {
-        super("nomemientas.JugadorEliminado");
+        super("nomemientas.ronda.JugadorEliminado");
         this.jugadorId = jugadorId;
     }
 

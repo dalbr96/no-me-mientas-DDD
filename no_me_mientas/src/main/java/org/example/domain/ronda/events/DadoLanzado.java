@@ -5,6 +5,6 @@ import co.com.sofka.domain.generic.DomainEvent;
 public class DadoLanzado extends DomainEvent {
 
     public DadoLanzado() {
-        super("nomemientas.LanzarDado");
+        super("nomemientas.ronda.LanzarDado");
     }
 }

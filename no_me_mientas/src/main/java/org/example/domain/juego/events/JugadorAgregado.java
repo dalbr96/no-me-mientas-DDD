@@ -12,7 +12,7 @@ public class JugadorAgregado extends DomainEvent {
     private Dinero capital;
 
     public JugadorAgregado(JugadorId jugadorId, Name name, Dinero capital){
-        super("nomemientas.JugadorAñadido");
+        super("nomemientas.juego.JugadorAgregado");
         this.jugadorId = jugadorId;
         this.nombre = name;
         this.capital = capital;

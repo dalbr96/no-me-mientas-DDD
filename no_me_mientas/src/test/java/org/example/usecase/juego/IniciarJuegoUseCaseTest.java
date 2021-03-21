@@ -14,7 +14,6 @@ import org.example.domain.juego.values.Dinero;
 import org.example.domain.juego.values.JuegoId;
 import org.example.domain.juego.values.JugadorId;
 import org.example.domain.juego.values.Name;
-import org.example.usecase.juego.IniciarJuegoUseCase;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -65,12 +64,12 @@ class IniciarJuegoUseCaseTest {
     }
 
     @Test
-    void iniciarJuego_rondaYaIniciada(){
+    void iniciarJuego_juegoYaIniciada(){
         var juegoId = JuegoId.of("xxx");
         var command = new IniciarJuego(juegoId);
         var useCase = new IniciarJuegoUseCase();
 
-        when(repository.getEventsBy(juegoId.value())).thenReturn(domainEvents_ErrorRondaYaIniciada(juegoId));
+        when(repository.getEventsBy(juegoId.value())).thenReturn(domainEvents_JuegoRondaYaIniciado(juegoId));
 
         useCase.addRepository(repository);
 
@@ -149,7 +148,7 @@ class IniciarJuegoUseCaseTest {
         return events;
     }
 
-    private List<DomainEvent> domainEvents_ErrorRondaYaIniciada(JuegoId juegoId) {
+    private List<DomainEvent> domainEvents_JuegoRondaYaIniciado(JuegoId juegoId) {
         List<DomainEvent> eventos =  List.of(
                 new JuegoCreado(juegoId),
                 new JugadorAgregado(JugadorId.of("xxx-1"), new Name("Daniel"), new Dinero(200)),

@@ -29,7 +29,10 @@ public class MongoEventStoreRepository implements EventStoreRepository {
     }
 
     @Override
-    public void saveEvent(String s, String s1, StoredEvent storedEvent) {
-
+    public void saveEvent(String aggregateName, String aggregateRootId, StoredEvent storedEvent) {
+        var eventStored = new DocumentEventStored();
+        eventStored.setAggregateRootId(aggregateRootId);
+        eventStored.setStoredEvent(storedEvent);
+        mongoTemplate.save(eventStored, aggregateName);
     }
 }

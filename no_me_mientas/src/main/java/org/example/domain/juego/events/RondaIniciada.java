@@ -17,8 +17,7 @@ public class RondaIniciada extends DomainEvent {
     public RondaIniciada(RondaId rondaId, List<JugadorId> jugadoresIds,
                          Map<JugadorId, Dinero> capitales) {
 
-        super("nomemientas.RondaIniciada");
-
+        super("nomemientas.juego.RondaIniciada");
         this.rondaId = rondaId;
         this.jugadoresIds = jugadoresIds;
         this.capitales = capitales;
