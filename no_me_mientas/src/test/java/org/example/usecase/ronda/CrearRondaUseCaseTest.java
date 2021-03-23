@@ -5,7 +5,7 @@ import co.com.sofka.business.generic.UseCaseHandler;
 import co.com.sofka.business.support.TriggeredEvent;
 import org.example.domain.juego.events.RondaIniciada;
 import org.example.domain.juego.values.Dinero;
-import org.example.domain.juego.values.DineroJugadores;
+import org.example.domain.ronda.values.CapitalesJugadoresRonda;
 import org.example.domain.juego.values.JugadorId;
 import org.example.domain.ronda.Ronda;
 import org.example.domain.ronda.events.RondaCreada;
@@ -14,8 +14,6 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 
 class CrearRondaUseCaseTest {
@@ -25,8 +23,8 @@ class CrearRondaUseCaseTest {
 
         var rondaId = RondaId.of("xxx");
         var jugadores = List.of(
-                new DineroJugadores(new Dinero(400), JugadorId.of("xxx-1")),
-                new DineroJugadores(new Dinero(300), JugadorId.of("xxx-2"))
+                new CapitalesJugadoresRonda(new Dinero(400), JugadorId.of("xxx-1")),
+                new CapitalesJugadoresRonda(new Dinero(300), JugadorId.of("xxx-2"))
                 );
 
         var event = new RondaIniciada(rondaId, jugadores);
@@ -54,7 +52,7 @@ class CrearRondaUseCaseTest {
     void crearRonda_FaltaDeJugadores(){
         var rondaId = RondaId.of("xxx");
         var jugadores = List.of(
-                new DineroJugadores(new Dinero(400), JugadorId.of("xxx-1"))
+                new CapitalesJugadoresRonda(new Dinero(400), JugadorId.of("xxx-1"))
         );
 
         var event = new RondaIniciada(rondaId, jugadores);

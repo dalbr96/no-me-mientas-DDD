@@ -6,7 +6,7 @@ import co.com.sofka.business.repository.DomainEventRepository;
 import co.com.sofka.business.support.RequestCommand;
 import co.com.sofka.domain.generic.DomainEvent;
 import org.example.domain.juego.values.Dinero;
-import org.example.domain.juego.values.DineroJugadores;
+import org.example.domain.ronda.values.CapitalesJugadoresRonda;
 import org.example.domain.juego.values.JuegoId;
 import org.example.domain.juego.values.JugadorId;
 import org.example.domain.ronda.Ronda;
@@ -21,7 +21,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import static org.mockito.Mockito.when;
 
@@ -75,11 +74,11 @@ class EliminarJugadorDeRondaUseCaseTest {
         var juegoId = JuegoId.of("xxx-j");
 
         var jugadores = List.of(
-                new DineroJugadores(new Dinero(400), JugadorId.of("xxx")),
-                new DineroJugadores(new Dinero(300), JugadorId.of("yyy")),
-                new DineroJugadores(new Dinero(700), JugadorId.of("zzz")),
-                new DineroJugadores(new Dinero(900), JugadorId.of("aaa")),
-                new DineroJugadores(new Dinero(800), JugadorId.of("bbb"))
+                new CapitalesJugadoresRonda(new Dinero(400), JugadorId.of("xxx")),
+                new CapitalesJugadoresRonda(new Dinero(300), JugadorId.of("yyy")),
+                new CapitalesJugadoresRonda(new Dinero(700), JugadorId.of("zzz")),
+                new CapitalesJugadoresRonda(new Dinero(900), JugadorId.of("aaa")),
+                new CapitalesJugadoresRonda(new Dinero(800), JugadorId.of("bbb"))
         );
 
         return List.of(

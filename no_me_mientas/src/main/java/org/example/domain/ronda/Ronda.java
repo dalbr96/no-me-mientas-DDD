@@ -3,7 +3,7 @@ package org.example.domain.ronda;
 import co.com.sofka.domain.generic.AggregateEvent;
 import co.com.sofka.domain.generic.DomainEvent;
 import org.example.domain.juego.values.Dinero;
-import org.example.domain.juego.values.DineroJugadores;
+import org.example.domain.ronda.values.CapitalesJugadoresRonda;
 import org.example.domain.juego.values.JuegoId;
 import org.example.domain.juego.values.JugadorId;
 import org.example.domain.ronda.events.*;
@@ -16,7 +16,7 @@ import java.util.*;
 
 public class Ronda extends AggregateEvent<RondaId> {
 
-    protected List<DineroJugadores> jugadores;
+    protected List<CapitalesJugadoresRonda> jugadores;
     protected Map<JugadorId, Puntaje> puntajes;
     protected Dinero capitalAcumulado;
     protected Set<Etapa> etapas;
@@ -29,7 +29,7 @@ public class Ronda extends AggregateEvent<RondaId> {
         subscribe(new RondaChange(this));
     }
 
-    public Ronda(RondaId entityId, JuegoId juegoId, List<DineroJugadores> jugadoresRonda){
+    public Ronda(RondaId entityId, JuegoId juegoId, List<CapitalesJugadoresRonda> jugadoresRonda){
 
         super(entityId);
         appendChange(new RondaCreada(entityId, juegoId, jugadoresRonda)).apply();
@@ -58,7 +58,7 @@ public class Ronda extends AggregateEvent<RondaId> {
                 .get().value().capital().value();
 
         List<JugadorId> jugadoresId = new ArrayList<>();
-        for(DineroJugadores jugador: jugadores){
+        for(CapitalesJugadoresRonda jugador: jugadores){
             if(jugador.value().jugando().equals(Boolean.TRUE)){
                 jugadoresId.add(jugador.value().jugadorId());
             }
@@ -87,7 +87,7 @@ public class Ronda extends AggregateEvent<RondaId> {
         appendChange(new JugadorEliminado(jugadorId)).apply();
     }
 
-    public List<DineroJugadores> jugadores() {
+    public List<CapitalesJugadoresRonda> jugadores() {
         return jugadores;
     }
 

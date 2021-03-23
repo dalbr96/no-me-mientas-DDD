@@ -5,7 +5,7 @@ import co.com.sofka.business.repository.DomainEventRepository;
 import co.com.sofka.business.support.TriggeredEvent;
 import co.com.sofka.domain.generic.DomainEvent;
 import org.example.domain.juego.values.Dinero;
-import org.example.domain.juego.values.DineroJugadores;
+import org.example.domain.ronda.values.CapitalesJugadoresRonda;
 import org.example.domain.juego.values.JuegoId;
 import org.example.domain.juego.values.JugadorId;
 import org.example.domain.ronda.Etapa;
@@ -113,8 +113,8 @@ class AsignarDadosDestapadosAEtapaUseCaseTest {
         );
 
         var jugadores = List.of(
-                new DineroJugadores(new Dinero(400), JugadorId.of("xxx-1")),
-                new DineroJugadores(new Dinero(300), JugadorId.of("xxx-2"))
+                new CapitalesJugadoresRonda(new Dinero(400), JugadorId.of("xxx-1")),
+                new CapitalesJugadoresRonda(new Dinero(300), JugadorId.of("xxx-2"))
         );
 
         var dados = new ArrayList<Dado>();

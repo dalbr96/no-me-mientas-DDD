@@ -5,6 +5,7 @@ import co.com.sofka.domain.generic.DomainEvent;
 import org.example.domain.juego.events.*;
 import org.example.domain.juego.factory.JugadorFactory;
 import org.example.domain.juego.values.*;
+import org.example.domain.ronda.values.CapitalesJugadoresRonda;
 import org.example.domain.ronda.values.RondaId;
 
 import java.util.*;
@@ -49,7 +50,7 @@ public class Juego extends AggregateEvent<JuegoId> {
 
     public void iniciarRonda(){
         List<JugadorId> jugadoresId;
-        List<DineroJugadores> jugadoresRonda = new ArrayList<>();
+        List<CapitalesJugadoresRonda> jugadoresRonda = new ArrayList<>();
 
         jugadoresId = this.jugadores.entrySet().stream().
                 filter(entry -> entry.getValue().capital().value() != 0)
@@ -57,7 +58,7 @@ public class Juego extends AggregateEvent<JuegoId> {
                 .collect(Collectors.toList());
 
         jugadoresId.forEach(jugadorId -> {
-            jugadoresRonda.add(new DineroJugadores(this.jugadores.get(jugadorId).capital(), jugadorId));
+            jugadoresRonda.add(new CapitalesJugadoresRonda(this.jugadores.get(jugadorId).capital(), jugadorId));
         });
 
         RondaId rondaId = new RondaId();

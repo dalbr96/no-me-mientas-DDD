@@ -3,15 +3,13 @@ package org.example.usecase.ronda;
 
 import co.com.sofka.business.generic.UseCaseHandler;
 import co.com.sofka.business.repository.DomainEventRepository;
-import co.com.sofka.business.support.RequestCommand;
 import co.com.sofka.business.support.TriggeredEvent;
 import co.com.sofka.domain.generic.DomainEvent;
 import org.example.domain.juego.values.Dinero;
-import org.example.domain.juego.values.DineroJugadores;
+import org.example.domain.ronda.values.CapitalesJugadoresRonda;
 import org.example.domain.juego.values.JuegoId;
 import org.example.domain.juego.values.JugadorId;
 import org.example.domain.ronda.Ronda;
-import org.example.domain.ronda.command.LanzarDados;
 import org.example.domain.ronda.events.RondaCreada;
 import org.example.domain.ronda.values.Dado;
 import org.example.domain.ronda.values.RondaId;
@@ -36,8 +34,8 @@ class LanzarDadoUseCaseTest {
         var juegoId = JuegoId.of("xxx-j");
 
         var jugadores = List.of(
-                new DineroJugadores(new Dinero(400), JugadorId.of("xxx-1")),
-                new DineroJugadores(new Dinero(300), JugadorId.of("xxx-2"))
+                new CapitalesJugadoresRonda(new Dinero(400), JugadorId.of("xxx-1")),
+                new CapitalesJugadoresRonda(new Dinero(300), JugadorId.of("xxx-2"))
         );
 
         var evento = new RondaCreada(rondaId, juegoId, jugadores);
@@ -67,8 +65,8 @@ class LanzarDadoUseCaseTest {
 
         var rondaId = RondaId.of("xxx");
         var jugadores = List.of(
-                new DineroJugadores(new Dinero(400), JugadorId.of("xxx-1")),
-                new DineroJugadores(new Dinero(300), JugadorId.of("xxx-2"))
+                new CapitalesJugadoresRonda(new Dinero(400), JugadorId.of("xxx-1")),
+                new CapitalesJugadoresRonda(new Dinero(300), JugadorId.of("xxx-2"))
         );
 
         var juegoId = JuegoId.of("xxx-j");

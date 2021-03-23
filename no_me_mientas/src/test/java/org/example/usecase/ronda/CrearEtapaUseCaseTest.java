@@ -6,7 +6,7 @@ import co.com.sofka.business.repository.DomainEventRepository;
 import co.com.sofka.business.support.RequestCommand;
 import co.com.sofka.domain.generic.DomainEvent;
 import org.example.domain.juego.values.Dinero;
-import org.example.domain.juego.values.DineroJugadores;
+import org.example.domain.ronda.values.CapitalesJugadoresRonda;
 import org.example.domain.juego.values.JuegoId;
 import org.example.domain.juego.values.JugadorId;
 import org.example.domain.ronda.Etapa;
@@ -15,7 +15,6 @@ import org.example.domain.ronda.command.CrearEtapa;
 import org.example.domain.ronda.events.EtapaCreada;
 import org.example.domain.ronda.events.RondaCreada;
 import org.example.domain.ronda.values.RondaId;
-import org.example.usecase.ronda.CrearEtapaUseCase;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -24,8 +23,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 import static org.mockito.Mockito.when;
 
@@ -149,12 +146,12 @@ class CrearEtapaUseCaseTest {
 
         var rondaId = RondaId.of("xxx");
         var juegoId = JuegoId.of("xxx-j");
-        var jugadorEliminado = new DineroJugadores(new Dinero(200), JugadorId.of("eliminado"));
+        var jugadorEliminado = new CapitalesJugadoresRonda(new Dinero(200), JugadorId.of("eliminado"));
         jugadorEliminado = jugadorEliminado.eliminarJugador(JugadorId.of("eliminado"));
 
         var jugadores = List.of(
-                new DineroJugadores(new Dinero(400), JugadorId.of("xxx-1")),
-                new DineroJugadores(new Dinero(300), JugadorId.of("xxx-2")),
+                new CapitalesJugadoresRonda(new Dinero(400), JugadorId.of("xxx-1")),
+                new CapitalesJugadoresRonda(new Dinero(300), JugadorId.of("xxx-2")),
                 jugadorEliminado
         );
 
@@ -194,7 +191,7 @@ class CrearEtapaUseCaseTest {
         var juegoId = JuegoId.of("xxx-j");
 
         var jugadores = List.of(
-                new DineroJugadores(new Dinero(400), JugadorId.of("xxx-1"))
+                new CapitalesJugadoresRonda(new Dinero(400), JugadorId.of("xxx-1"))
         );
 
         return List.of(

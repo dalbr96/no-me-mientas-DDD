@@ -1,28 +1,30 @@
-package org.example.domain.juego.values;
+package org.example.domain.ronda.values;
 
 import co.com.sofka.domain.generic.ValueObject;
+import org.example.domain.juego.values.Dinero;
+import org.example.domain.juego.values.JugadorId;
 
-public class DineroJugadores implements ValueObject<DineroJugadores.Values> {
+public class CapitalesJugadoresRonda implements ValueObject<CapitalesJugadoresRonda.Values> {
 
     private final Boolean jugando;
     private final Dinero capital;
     private final JugadorId jugadorId;
 
 
-    private DineroJugadores(Boolean jugando, Dinero capital, JugadorId jugadorId) {
+    private CapitalesJugadoresRonda(Boolean jugando, Dinero capital, JugadorId jugadorId) {
         this.jugando = jugando;
         this.capital = capital;
         this.jugadorId = jugadorId;
     }
 
-    public DineroJugadores(Dinero capital, JugadorId jugadorId) {
+    public CapitalesJugadoresRonda(Dinero capital, JugadorId jugadorId) {
         this.jugando = Boolean.TRUE;
         this.capital = capital;
         this.jugadorId = jugadorId;
     }
 
-    public DineroJugadores eliminarJugador(JugadorId jugadorId){
-        return new DineroJugadores(Boolean.FALSE, this.capital, this.jugadorId);
+    public CapitalesJugadoresRonda eliminarJugador(JugadorId jugadorId){
+        return new CapitalesJugadoresRonda(Boolean.FALSE, this.capital, this.jugadorId);
     }
 
     @Override
