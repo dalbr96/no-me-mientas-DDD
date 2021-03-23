@@ -19,7 +19,7 @@ public class CrearEtapaUseCase extends UseCase<RequestCommand<CrearEtapa>, Respo
         var rondaId = command.getRondaId();
         var ronda = Ronda.from(rondaId, retrieveEvents());
 
-        if(ronda.jugadoresRonda().size() < MINIMO_JUGADORES){
+        if(ronda.jugadores().size() < MINIMO_JUGADORES){
             throw new BusinessException(rondaId.value(), "No se puede crear una Etapa con solo un jugador");
         }
 

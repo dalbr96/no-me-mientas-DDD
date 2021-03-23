@@ -3,6 +3,7 @@ package org.example.domain.ronda;
 import co.com.sofka.domain.generic.AggregateEvent;
 import co.com.sofka.domain.generic.DomainEvent;
 import org.example.domain.juego.values.Dinero;
+import org.example.domain.juego.values.DineroJugadores;
 import org.example.domain.juego.values.JuegoId;
 import org.example.domain.juego.values.JugadorId;
 import org.example.domain.ronda.events.*;
@@ -15,8 +16,7 @@ import java.util.*;
 
 public class Ronda extends AggregateEvent<RondaId> {
 
-    protected List<JugadorId> jugadoresRonda;
-    protected Map<JugadorId, Dinero> capitalJugadores;
+    protected List<DineroJugadores> jugadores;
     protected Map<JugadorId, Puntaje> puntajes;
     protected Dinero capitalAcumulado;
     protected Set<Etapa> etapas;
@@ -29,10 +29,10 @@ public class Ronda extends AggregateEvent<RondaId> {
         subscribe(new RondaChange(this));
     }
 
-    public Ronda(RondaId entityId, JuegoId juegoId, List<JugadorId> jugadoresRonda, Map<JugadorId, Dinero> capitalJugadores){
+    public Ronda(RondaId entityId, JuegoId juegoId, List<DineroJugadores> jugadoresRonda){
 
         super(entityId);
-        appendChange(new RondaCreada(entityId, juegoId, jugadoresRonda, capitalJugadores)).apply();
+        appendChange(new RondaCreada(entityId, juegoId, jugadoresRonda)).apply();
     }
 
     public static Ronda from(RondaId entityId, List<DomainEvent> events){
@@ -42,19 +42,29 @@ public class Ronda extends AggregateEvent<RondaId> {
     }
 
     public void lanzarDados(){
+
+        List<Dado> dados = new ArrayList<>();
+
         for(int i = 0; i < 6; i++){
-            appendChange(new DadoLanzado()).apply();
+            dados.add(new Dado());
         }
+        appendChange(new DadosLanzados(dados)).apply();
     }
 
     public void crearEtapa(){
-        Integer apuestaMaxima = this.capitalJugadores
-                .values()
-                .stream()
-                .max(Comparator.comparing(Dinero::value))
-                .get().value();
 
-        appendChange(new EtapaCreada(apuestaMaxima, jugadoresRonda)).apply();
+        Integer apuestaMaxima = this.jugadores.stream()
+                .max(Comparator.comparing(dinero -> dinero.value().capital().value()))
+                .get().value().capital().value();
+
+        List<JugadorId> jugadoresId = new ArrayList<>();
+        for(DineroJugadores jugador: jugadores){
+            if(jugador.value().jugando().equals(Boolean.TRUE)){
+                jugadoresId.add(jugador.value().jugadorId());
+            }
+        }
+
+        appendChange(new EtapaCreada(apuestaMaxima, jugadoresId)).apply();
     }
 
     public void asignarApuesta(JugadorId jugadorId, Apuesta apuesta){
@@ -77,12 +87,8 @@ public class Ronda extends AggregateEvent<RondaId> {
         appendChange(new JugadorEliminado(jugadorId)).apply();
     }
 
-    public List<JugadorId> jugadoresRonda() {
-        return jugadoresRonda;
-    }
-
-    public Map<JugadorId, Dinero> capitales() {
-        return capitalJugadores;
+    public List<DineroJugadores> jugadores() {
+        return jugadores;
     }
 
     public Map<JugadorId, Puntaje> puntajes() {

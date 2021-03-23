@@ -4,10 +4,7 @@ import co.com.sofka.domain.generic.AggregateEvent;
 import co.com.sofka.domain.generic.DomainEvent;
 import org.example.domain.juego.events.*;
 import org.example.domain.juego.factory.JugadorFactory;
-import org.example.domain.juego.values.Dinero;
-import org.example.domain.juego.values.JuegoId;
-import org.example.domain.juego.values.JugadorId;
-import org.example.domain.juego.values.Name;
+import org.example.domain.juego.values.*;
 import org.example.domain.ronda.values.RondaId;
 
 import java.util.*;
@@ -52,7 +49,7 @@ public class Juego extends AggregateEvent<JuegoId> {
 
     public void iniciarRonda(){
         List<JugadorId> jugadoresId;
-        Map<JugadorId, Dinero> capitales = new HashMap<>();
+        List<DineroJugadores> jugadoresRonda = new ArrayList<>();
 
         jugadoresId = this.jugadores.entrySet().stream().
                 filter(entry -> entry.getValue().capital().value() != 0)
@@ -60,12 +57,12 @@ public class Juego extends AggregateEvent<JuegoId> {
                 .collect(Collectors.toList());
 
         jugadoresId.forEach(jugadorId -> {
-            capitales.put(jugadorId, this.jugadores.get(jugadorId).capital());
+            jugadoresRonda.add(new DineroJugadores(this.jugadores.get(jugadorId).capital(), jugadorId));
         });
 
         RondaId rondaId = new RondaId();
 
-        appendChange(new RondaIniciada(rondaId, jugadoresId, capitales)).apply();
+        appendChange(new RondaIniciada(rondaId, jugadoresRonda)).apply();
     }
 
     public void finalizarJuegoGanador(){

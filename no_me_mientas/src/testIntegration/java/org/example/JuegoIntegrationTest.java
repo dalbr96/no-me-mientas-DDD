@@ -72,6 +72,6 @@ public class JuegoIntegrationTest extends CommandBaseIntegrationTest{
         ), requestFields(
                 fieldWithPath("commandType").description("Tipo de comando"),
                 fieldWithPath("aggregateId").description("Identificador del agregado.")
-        ), 1);
+        ), 2);
     }
 }

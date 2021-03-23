@@ -16,8 +16,7 @@ public class EliminarJugadorDeRondaUseCase extends UseCase<RequestCommand<Elimin
         var rondaId = command.getRondaId();
 
         Ronda ronda = Ronda.from(rondaId, retrieveEvents());
-
-        if(!ronda.jugadoresRonda().contains(jugadorId)){
+        if(!ronda.jugadores().stream().anyMatch(jugadorAEliminar -> jugadorAEliminar.value().jugadorId().value() == jugadorId.value())){
             throw new BusinessException(jugadorId.value(),
                     "No se puede eliminar jugador porque no hace parte de la ronda");
         }

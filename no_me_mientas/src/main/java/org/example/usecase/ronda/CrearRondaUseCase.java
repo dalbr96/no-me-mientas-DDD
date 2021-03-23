@@ -13,7 +13,7 @@ import org.example.domain.ronda.Ronda;
 import java.util.List;
 
 
-//@EventListener(eventType = "nomemientas.juego.RondaIniciada")
+@EventListener(eventType = "nomemientas.juego.RondaIniciada")
 public class CrearRondaUseCase extends UseCase<TriggeredEvent<RondaIniciada>, ResponseEvents> {
 
     public static final int MINIMO_JUGADORES = 2;
@@ -24,15 +24,13 @@ public class CrearRondaUseCase extends UseCase<TriggeredEvent<RondaIniciada>, Re
         var event = rondaIniciadaTriggeredEvent.getDomainEvent();
         var rondaId = event.getRondaId();
         var juegoId = JuegoId.of(event.aggregateRootId());
-        var capitales = event.getCapitales();
+        var jugadores = event.getJugadores();
 
-        List<JugadorId> jugadores = event.getJugadoresIds();
-
-        if(event.getJugadoresIds().size() < MINIMO_JUGADORES){
+        if(jugadores.size() < MINIMO_JUGADORES){
             throw new BusinessException(rondaId.value(), "No se puede iniciar ronda por falta de jugadores");
         }
 
-        var ronda = new Ronda(rondaId, juegoId, jugadores, capitales);
+        var ronda = new Ronda(rondaId, juegoId, jugadores);
 
 
         var commits = ronda.getUncommittedChanges();

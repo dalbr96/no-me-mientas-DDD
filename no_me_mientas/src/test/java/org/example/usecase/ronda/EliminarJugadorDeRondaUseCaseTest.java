@@ -6,6 +6,7 @@ import co.com.sofka.business.repository.DomainEventRepository;
 import co.com.sofka.business.support.RequestCommand;
 import co.com.sofka.domain.generic.DomainEvent;
 import org.example.domain.juego.values.Dinero;
+import org.example.domain.juego.values.DineroJugadores;
 import org.example.domain.juego.values.JuegoId;
 import org.example.domain.juego.values.JugadorId;
 import org.example.domain.ronda.Ronda;
@@ -48,8 +49,9 @@ class EliminarJugadorDeRondaUseCaseTest {
 
         var ronda = Ronda.from(command.getRondaId(), eventosActualizados);
 
-        Assertions.assertEquals(4, ronda.jugadoresRonda().size());
-        Assertions.assertFalse(ronda.jugadoresRonda().contains(command.getJugadorId()));
+        Assertions.assertEquals(4, ronda.jugadores().stream().filter(jugador -> jugador.value().jugando().equals(Boolean.TRUE)).count());
+        Assertions.assertEquals(1, ronda.jugadores().stream().filter(jugador -> jugador.value().jugando().equals(Boolean.FALSE)).count());
+
     }
 
     @Test
@@ -73,23 +75,15 @@ class EliminarJugadorDeRondaUseCaseTest {
         var juegoId = JuegoId.of("xxx-j");
 
         var jugadores = List.of(
-                JugadorId.of("xxx"),
-                JugadorId.of("yyy"),
-                JugadorId.of("zzz"),
-                JugadorId.of("aaa"),
-                JugadorId.of("bbb")
-        );
-
-        var capitales = Map.of(
-                JugadorId.of("xxx"), new Dinero(400),
-                JugadorId.of("yyy"), new Dinero(300),
-                JugadorId.of("zzz"), new Dinero(700),
-                JugadorId.of("aaa"), new Dinero(900),
-                JugadorId.of("bbb"), new Dinero(800)
+                new DineroJugadores(new Dinero(400), JugadorId.of("xxx")),
+                new DineroJugadores(new Dinero(300), JugadorId.of("yyy")),
+                new DineroJugadores(new Dinero(700), JugadorId.of("zzz")),
+                new DineroJugadores(new Dinero(900), JugadorId.of("aaa")),
+                new DineroJugadores(new Dinero(800), JugadorId.of("bbb"))
         );
 
         return List.of(
-                new RondaCreada(rondaId, juegoId, jugadores, capitales)
+                new RondaCreada(rondaId, juegoId, jugadores)
         );
     }
 }

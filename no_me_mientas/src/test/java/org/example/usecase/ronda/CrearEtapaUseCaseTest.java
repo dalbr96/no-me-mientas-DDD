@@ -6,6 +6,7 @@ import co.com.sofka.business.repository.DomainEventRepository;
 import co.com.sofka.business.support.RequestCommand;
 import co.com.sofka.domain.generic.DomainEvent;
 import org.example.domain.juego.values.Dinero;
+import org.example.domain.juego.values.DineroJugadores;
 import org.example.domain.juego.values.JuegoId;
 import org.example.domain.juego.values.JugadorId;
 import org.example.domain.ronda.Etapa;
@@ -148,19 +149,17 @@ class CrearEtapaUseCaseTest {
 
         var rondaId = RondaId.of("xxx");
         var juegoId = JuegoId.of("xxx-j");
+        var jugadorEliminado = new DineroJugadores(new Dinero(200), JugadorId.of("eliminado"));
+        jugadorEliminado = jugadorEliminado.eliminarJugador(JugadorId.of("eliminado"));
 
         var jugadores = List.of(
-                JugadorId.of("xxx-1"),
-                JugadorId.of("xxx-2")
-        );
-
-        var capitales = Map.of(
-                JugadorId.of("xxx-1"), new Dinero(400),
-                JugadorId.of("xxx-2"), new Dinero(300)
+                new DineroJugadores(new Dinero(400), JugadorId.of("xxx-1")),
+                new DineroJugadores(new Dinero(300), JugadorId.of("xxx-2")),
+                jugadorEliminado
         );
 
         return List.of(
-                new RondaCreada(rondaId, juegoId, jugadores, capitales)
+                new RondaCreada(rondaId, juegoId, jugadores)
         );
     }
 
@@ -195,15 +194,11 @@ class CrearEtapaUseCaseTest {
         var juegoId = JuegoId.of("xxx-j");
 
         var jugadores = List.of(
-                JugadorId.of("xxx-1")
-        );
-
-        var capitales = Map.of(
-                JugadorId.of("xxx-1"), new Dinero(400)
+                new DineroJugadores(new Dinero(400), JugadorId.of("xxx-1"))
         );
 
         return List.of(
-                new RondaCreada(rondaId, juegoId, jugadores, capitales)
+                new RondaCreada(rondaId, juegoId, jugadores)
         );
     }
 }

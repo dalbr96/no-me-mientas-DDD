@@ -16,11 +16,10 @@ public class RondaChange extends EventChange {
     public RondaChange(Ronda ronda){
 
         apply((RondaCreada event) ->{
-            ronda.jugadoresRonda = event.getJugadoresRonda();
-            ronda.capitalJugadores = event.getCapitalJugadores();
+            ronda.jugadores = event.getJugadoresRonda();
             ronda.puntajes = new HashMap<>();
-            ronda.jugadoresRonda.forEach((jugadorId) -> {
-                ronda.puntajes.put(jugadorId, new Puntaje(0));
+            ronda.jugadores.forEach((jugador) -> {
+                ronda.puntajes.put(jugador.value().jugadorId(), new Puntaje(0));
             });
             ronda.capitalAcumulado = new Dinero(0);
             ronda.dados = new ArrayList<>();
@@ -42,10 +41,19 @@ public class RondaChange extends EventChange {
 
         apply((JugadorEliminado event) -> {
             var jugadorId = event.getJugadorId();
-            var jugadores = new ArrayList<>(ronda.jugadoresRonda());
-            jugadores.remove(jugadorId);
-            ronda.jugadoresRonda = jugadores;
+
+            var jugadorAEliminar = ronda.jugadores.stream()
+                    .filter(jugador -> jugador.value().jugadorId().value() == jugadorId.value())
+                    .findFirst().get();
+
+            var jugadorEliminado = jugadorAEliminar.eliminarJugador(jugadorId);
+            var jugadores = new ArrayList<>(ronda.jugadores);
+            jugadores.remove(jugadorAEliminar);
+            jugadores.add(jugadorEliminado);
+            ronda.jugadores = jugadores;
         });
+
+
 
     }
 
@@ -108,11 +116,9 @@ public class RondaChange extends EventChange {
         };
     }
 
-    private Consumer<DadoLanzado> dadoslanzados(Ronda ronda) {
-        return (DadoLanzado event) -> {
-            for (int i = 0; i < 6; i++) {
-                ronda.dados.add(new Dado());
-            }
+    private Consumer<DadosLanzados> dadoslanzados(Ronda ronda) {
+        return (DadosLanzados event) -> {
+            ronda.dados = event.getDados();
         };
     }
 }

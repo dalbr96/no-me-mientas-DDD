@@ -2,6 +2,7 @@ package org.example.domain.ronda.events;
 
 import co.com.sofka.domain.generic.DomainEvent;
 import org.example.domain.juego.values.Dinero;
+import org.example.domain.juego.values.DineroJugadores;
 import org.example.domain.juego.values.JuegoId;
 import org.example.domain.juego.values.JugadorId;
 import org.example.domain.ronda.values.RondaId;
@@ -12,16 +13,15 @@ public class RondaCreada extends DomainEvent {
 
     private final RondaId rondaId;
     private final JuegoId juegoId;
-    private final List<JugadorId> jugadoresRonda;
-    private Map<JugadorId, Dinero> capitalJugadores;
+    private final List<DineroJugadores> jugadoresRonda;
 
 
-    public RondaCreada(RondaId rondaId, JuegoId juegoId, List<JugadorId> jugadoresRonda, Map<JugadorId, Dinero> capitalJugadores) {
+
+    public RondaCreada(RondaId rondaId, JuegoId juegoId, List<DineroJugadores> jugadoresRonda) {
 
         super("nomemientas.ronda.RondaCreada");
         this.rondaId = rondaId;
         this.juegoId = juegoId;
-        this.capitalJugadores = capitalJugadores;
         this.jugadoresRonda = jugadoresRonda;
     }
 
@@ -33,12 +33,9 @@ public class RondaCreada extends DomainEvent {
         return juegoId;
     }
 
-    public List<JugadorId> getJugadoresRonda() {
+    public List<DineroJugadores>  getJugadoresRonda() {
         return jugadoresRonda;
     }
 
-    public Map<JugadorId, Dinero> getCapitalJugadores() {
-        return capitalJugadores;
-    }
 
 }

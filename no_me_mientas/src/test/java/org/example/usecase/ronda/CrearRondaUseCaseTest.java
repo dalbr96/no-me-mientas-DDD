@@ -5,6 +5,7 @@ import co.com.sofka.business.generic.UseCaseHandler;
 import co.com.sofka.business.support.TriggeredEvent;
 import org.example.domain.juego.events.RondaIniciada;
 import org.example.domain.juego.values.Dinero;
+import org.example.domain.juego.values.DineroJugadores;
 import org.example.domain.juego.values.JugadorId;
 import org.example.domain.ronda.Ronda;
 import org.example.domain.ronda.events.RondaCreada;
@@ -23,13 +24,12 @@ class CrearRondaUseCaseTest {
     void crearRonda(){
 
         var rondaId = RondaId.of("xxx");
-        var jugadoresId = List.of(JugadorId.of("xxx-1"), JugadorId.of("xxx-2"));
-        var capitales = Map.of(
-                JugadorId.of("xxx-1"), new Dinero(400),
-                JugadorId.of("xxx-2"), new Dinero(300)
-        );
+        var jugadores = List.of(
+                new DineroJugadores(new Dinero(400), JugadorId.of("xxx-1")),
+                new DineroJugadores(new Dinero(300), JugadorId.of("xxx-2"))
+                );
 
-        var event = new RondaIniciada(rondaId, jugadoresId, capitales);
+        var event = new RondaIniciada(rondaId, jugadores);
 
         event.setAggregateRootId("jjj");
 
@@ -45,7 +45,7 @@ class CrearRondaUseCaseTest {
 
         Assertions.assertEquals("jjj", rondaCreada.getJuegoId().value());
         Assertions.assertEquals(0, rondaIniciada.capitalAcumulado().value());
-        Assertions.assertEquals(2, rondaIniciada.jugadoresRonda().size());
+        Assertions.assertEquals(2, rondaIniciada.jugadores().size());
         Assertions.assertEquals(0, rondaIniciada.puntajes().get(JugadorId.of("xxx-1")).value());
         Assertions.assertEquals(0, rondaIniciada.puntajes().get(JugadorId.of("xxx-2")).value());
     }
@@ -53,12 +53,11 @@ class CrearRondaUseCaseTest {
     @Test
     void crearRonda_FaltaDeJugadores(){
         var rondaId = RondaId.of("xxx");
-        var jugadoresId = List.of(JugadorId.of("xxx-1"));
-        var capitales = Map.of(
-                JugadorId.of("xxx-1"), new Dinero(400)
+        var jugadores = List.of(
+                new DineroJugadores(new Dinero(400), JugadorId.of("xxx-1"))
         );
 
-        var event = new RondaIniciada(rondaId, jugadoresId, capitales);
+        var event = new RondaIniciada(rondaId, jugadores);
 
         event.setAggregateRootId("jjj");
 

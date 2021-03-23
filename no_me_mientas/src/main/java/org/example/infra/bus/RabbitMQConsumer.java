@@ -35,6 +35,16 @@ public class RabbitMQConsumer implements Flow.Subscription{
         localReplay(message);
     }
 
+
+    @RabbitListener(bindings = @QueueBinding(
+            value = @Queue(value = "ronda.handles", durable = "true"),
+            exchange = @Exchange(value = "no_me_mientas", type = "topic"),
+            key = "nomemientas.ronda.#"
+    ))
+    public void recievedMessageSlackRonda(Message<String> message){
+        localReplay(message);
+    }
+
     private void localReplay(Message<String> payload) {
         try{
             var message = payload.getPayload();

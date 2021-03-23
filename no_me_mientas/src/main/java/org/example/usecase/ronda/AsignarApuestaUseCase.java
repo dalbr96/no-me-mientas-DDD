@@ -46,7 +46,7 @@ public class AsignarApuestaUseCase extends UseCase<RequestCommand<AsignarApuesta
     }
 
     private void verificarFondosJugador(RondaId rondaId, JugadorId jugadorId, Apuesta apuesta, Ronda ronda) {
-        if(ronda.capitales().get(jugadorId).value() < apuesta.value().dineroApostado().value()){
+        if(ronda.jugadores().stream().filter(jugador -> jugador.value().jugadorId().value() == jugadorId.value()).findFirst().get().value().capital().value() < apuesta.value().dineroApostado().value()){
             throw new BusinessException(rondaId.value(), "El jugador no cuenta con fondos suficientes");
         }
     }

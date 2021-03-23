@@ -13,4 +13,6 @@ public class JugadorId extends Identity {
     public static JugadorId of(String uid){
         return new JugadorId(uid);
     }
+
+
 }

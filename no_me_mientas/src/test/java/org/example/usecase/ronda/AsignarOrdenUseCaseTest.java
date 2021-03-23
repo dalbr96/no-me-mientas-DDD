@@ -5,12 +5,14 @@ import co.com.sofka.business.repository.DomainEventRepository;
 import co.com.sofka.business.support.TriggeredEvent;
 import co.com.sofka.domain.generic.DomainEvent;
 import org.example.domain.juego.values.Dinero;
+import org.example.domain.juego.values.DineroJugadores;
 import org.example.domain.juego.values.JuegoId;
 import org.example.domain.juego.values.JugadorId;
 import org.example.domain.ronda.Ronda;
-import org.example.domain.ronda.events.DadoLanzado;
+import org.example.domain.ronda.events.DadosLanzados;
 import org.example.domain.ronda.events.EtapaCreada;
 import org.example.domain.ronda.events.RondaCreada;
+import org.example.domain.ronda.values.Dado;
 import org.example.domain.ronda.values.RondaId;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -20,7 +22,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import static org.mockito.Mockito.when;
 
@@ -64,7 +65,7 @@ class AsignarOrdenUseCaseTest {
         var rondaId = RondaId.of("xxxx");
         var juegoId = JuegoId.of("xxx-j");
 
-        var jugadores = List.of(
+        var jugadoresRonda = List.of(
                 JugadorId.of("xxx-1"),
                 JugadorId.of("xxx-2"),
                 JugadorId.of("xxx-3"),
@@ -72,18 +73,24 @@ class AsignarOrdenUseCaseTest {
                 JugadorId.of("xxx-5")
         );
 
-        var capitales = Map.of(
-                JugadorId.of("xxx-1"), new Dinero(400),
-                JugadorId.of("xxx-2"), new Dinero(300),
-                JugadorId.of("xxx-3"), new Dinero(700),
-                JugadorId.of("xxx-4"), new Dinero(900),
-                JugadorId.of("xxx-5"), new Dinero(800)
+        var jugadores = List.of(
+                new DineroJugadores(new Dinero(400), JugadorId.of("xxx-1")),
+                new DineroJugadores(new Dinero(300), JugadorId.of("xxx-2")),
+                new DineroJugadores(new Dinero(700), JugadorId.of("xxx-3")),
+                new DineroJugadores(new Dinero(900), JugadorId.of("xxx-4")),
+                new DineroJugadores(new Dinero(800), JugadorId.of("xxx-5"))
         );
 
+        var dados = new ArrayList<Dado>();
+
+        for(int i = 0; i < 6; i++){
+            dados.add(new Dado());
+        }
+
         return List.of(
-                new RondaCreada(rondaId, juegoId, jugadores, capitales),
-                new DadoLanzado(),
-                new EtapaCreada(900, jugadores)
+                new RondaCreada(rondaId, juegoId, jugadores),
+                new DadosLanzados(dados),
+                new EtapaCreada(900, jugadoresRonda)
         );
     }
 
